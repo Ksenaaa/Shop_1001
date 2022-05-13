@@ -1,0 +1,60 @@
+.App{
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color: rgb(70, 70, 68);
+}
+
+.wrapperLogin {
+    margin: 100px auto;
+    height: 300px;
+    width: 370px;
+    border: 2px solid rgb(209, 205, 205);
+    background-color: rgb(241, 240, 240);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
+}
+
+.buttonLoginWrapper {
+    display: flex;
+    justify-content: space-evenly;
+    width: 250px;
+    margin: 20px;
+}
+
+.wrapperCloseWindow img{
+    height: 25px;
+}
+
+.wrapperregister{
+    min-height: 500px;
+    margin: 70px auto;
+    padding: 0;
+    display: flex;
+    box-shadow: rgb(0 0 0 / 20%) 0 3px 50px -1px, rgb(0 0 0 / 14%) 0 6px 100px 0, rgb(0 0 0 / 12%) 0 100px 180px 0;
+}
+
+.wrappererrorregister {
+    height: auto;
+}
+
+.wrapperRadio {
+    display: flex;
+    flex-direction: row;
+}
+
+.MuiOutlinedInput-root {
+    width: 320px;
+}
+
+.MuiFormHelperText-contained {
+    width: 320px;
+}
+
+.makeStyles-root-1 .MuiFormControl-root{
+    width: 35.6ch;
+    align-items: center;
+    margin: 3px
+}
+
