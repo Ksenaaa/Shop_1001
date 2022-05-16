@@ -13,8 +13,3 @@ export const AuthContext = createContext({
     login: ({jwtToken, id, name, email, icon, role}:UserAuth) => {},
     logout: () => {},
 })
-
-// export const FriendsContext = createContext<{friends: FriendsType[]}>({ 
-//     friends: [],
-// })
-

@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react'
+import React, { ChangeEvent, FC, useState } from 'react'
+import LoadingCircular from '../../../component/LoadingCircular'
 import { Button } from '@material-ui/core'
-import { RadioButtonRegistration } from '../component/RadioButtonRegistration'
-import { useHttp } from '../hooks/http.hook'
-import { TextFields } from '../component/Input'
+import { RadioButtonRegistration } from '../../../component/RadioButtonRegistration'
+import { useHttp } from '../../../hooks/http.hook'
+import { TextFields } from '../../../component/Input'
 
 type ModalWindow = {
     onClose: () => void
@@ -17,24 +18,24 @@ type RegisterUser = {
 }
 
 export const ModalRegistration:FC<ModalWindow> = ({onClose}) => {
-    const [form, setForm] = useState<RegisterUser>({email:'', name:'', password:'', checkPassword:'', role:''})
+    const [form, setForm] = useState<RegisterUser>({email:'', name:'', password:'', checkPassword:'', role:'buyer'})
     const {loading, request, errorsValid} = useHttp()
-    console.log(errorsValid)
-    const changeHandler = (event: any) => {
+    const changeHandler = (event: ChangeEvent<HTMLInputElement>): void => {
         setForm({...form, [event.target.name]: event.target.value})
     }
 
     const registrationHandler = async () => {
-        console.log(form)
-
-        try {
-            const data = await request('api/auth/register', 'POST', {...form} )
-            console.log(data, 'register data')
-        } catch (e) {}
+        const data = await request({url: 'api/auth/register', method: 'POST', body: {...form} })
+        if(!data) return ''
+        onClose()
     }
-    
+
     return (
-        <div className={errorsValid?"wrapperLogin wrapperregister wrappererrorregister":"wrapperLogin wrapperregister"}>
+        <form noValidate autoComplete="off" className={errorsValid
+                            ?"wrapperLogin wrapperregister wrappererrorregister"
+                            :"wrapperLogin wrapperregister"
+        }>
+            {loading && <LoadingCircular/>}
             <h2>Registration</h2> 
             <TextFields
                 label="Email" 
@@ -79,6 +80,6 @@ export const ModalRegistration:FC<ModalWindow> = ({onClose}) => {
             <div className="wrapperCloseWindow" onClick={onClose}>
                 <img src="https://cdn-icons-png.flaticon.com/512/51/51517.png"  alt=''/>
             </div>
-        </div>
+        </form>
     )
 }

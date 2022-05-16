@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
-import { ModalRegistration } from './ModalRegistration'
-import { ModalLogin } from './ModalLogin'
+import { ModalRegistration } from './components/ModalRegistration'
+import { ModalLogin } from './components/ModalLogin'
 
-import '../App.css';
+import '../../App.css';
 
-export const PageLogin = () => {
+export const Auth = () => {
     const [modalRegistrationVisible, setModalRegistrationVisible] = useState(false)
-        
+
     return (
     <>
-        {modalRegistrationVisible ? 
-            <ModalRegistration
+        {modalRegistrationVisible  
+            ? <ModalRegistration
                 onClose={() => setModalRegistrationVisible(false)}
             /> 
-            :
-            <ModalLogin 
+            : <ModalLogin 
                 onClick={() => setModalRegistrationVisible(true)}
             />
         }

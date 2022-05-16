@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const PageGoods = () => {
+export const Main = () => {
     return (
         <div>Goods</div>
     )

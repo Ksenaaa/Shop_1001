@@ -1,6 +1,6 @@
 import React from "react";
-import { PageGoods } from "../pages/PageGoods";
-import { PageLogin } from "../pages/PageLogin";
+import { Main } from "../pages/main/Main";
+import { Auth } from "../pages/auth/Auth";
 
 export interface IRoute {
     path: string;
@@ -14,9 +14,9 @@ export enum RouteNames {
 }
 
 export const publicRoutes: IRoute[] = [
-    {path: RouteNames.LOGIN, exact: true, element: PageLogin}
+    {path: RouteNames.LOGIN, exact: true, element: Auth}
 ]
 
 export const privateRoutes: IRoute[] = [
-    {path: RouteNames.GOODS, exact: true, element: PageGoods}
+    {path: RouteNames.GOODS, exact: true, element: Main}
 ]

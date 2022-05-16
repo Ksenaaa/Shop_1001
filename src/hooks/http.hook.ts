@@ -1,12 +1,25 @@
 import { useCallback, useState } from "react"
 
+type RequestType = {
+    url: string,
+    method?: string, 
+    body?: any, 
+    headers?: { [x: string]: string },
+}
+
+type ErrorType = {
+    param: string,
+    msg: string,
+}
+
 export const useHttp = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [errorsValid, setErrorsValid] = useState(null)
 
-    const request = useCallback( async (url: string, method = 'GET', body: any = null, headers: any = {}) => {
+    const request = useCallback(async ( {url, method = 'GET', body, headers = {}}: RequestType )=> {
         setLoading(true)
+
         try {
             if (body) {
                 body = JSON.stringify(body)
@@ -16,20 +29,15 @@ export const useHttp = () => {
             const response = await fetch(url, {method, body, headers})
             const data = await response.json()
 
-            if(!response.ok) {
-                const errorsArray = ():any => {
-                    let m:any = []
-                    const er = data.errors.filter((error: any) => {
-                        m.push({
-                            nameData: error.param,
-                            errorText: error.msg
-                        })
-                    })
-                    return m
-                }
-                setErrorsValid(errorsArray())
+            if(!response.ok) { 
+                const errors = data.errors.map((error: ErrorType) => ({
+                    errorField: error.param,
+                    errorText: error.msg
+                }))
 
-                throw new Error(data || 'Error Error!')
+                setErrorsValid(errors)
+
+                throw new Error(data.message || 'Error Error!')
             }
 
             return data
@@ -37,7 +45,9 @@ export const useHttp = () => {
             setError(e.message)
             throw e
         } finally {
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false)
+            },1000) 
         }
     }, [])
 
@@ -46,5 +56,5 @@ export const useHttp = () => {
         setErrorsValid(null)
     }, [])
     
-    return {loading, request, error, clearError, errorsValid}
+    return {loading, setLoading, request, error, clearError, errorsValid}
 }
