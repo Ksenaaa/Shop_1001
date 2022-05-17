@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, useCallback, useState } from 'react'
 import { Button } from '@material-ui/core'
+import cn from 'classnames'
 
 import LoadingCircular from '../../../component/LoadingCircular'
 import { RadioButtonRegistration } from '../../../component/RadioButtonRegistration'
@@ -32,16 +33,13 @@ export const ModalRegistration: FC<ModalWindow> = ({onClose}) => {
         onClose()
     }, [onClose, form]) 
 
-    const classes = {
-        wrapWithErr: "wrapperLogin wrapperregister wrappererrorregister",
-        wrap: "wrapperLogin wrapperregister"
-    }
+    const classes = cn("wrapperLogin", "wrapperRegister", errorsValid && "wrapperErrorRegister")
 
     return (
         <form 
             noValidate 
             autoComplete="off" 
-            className={errorsValid ? classes.wrapWithErr : classes.wrap}
+            className={classes}
         >
             {loading && <LoadingCircular/>}
             <h2>Registration</h2> 

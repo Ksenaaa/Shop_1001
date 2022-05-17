@@ -27,7 +27,7 @@
     height: 25px;
 }
 
-.wrapperregister{
+.wrapperRegister{
     min-height: 500px;
     margin: 70px auto;
     padding: 0;
@@ -35,7 +35,7 @@
     box-shadow: rgb(0 0 0 / 20%) 0 3px 50px -1px, rgb(0 0 0 / 14%) 0 6px 100px 0, rgb(0 0 0 / 12%) 0 100px 180px 0;
 }
 
-.wrappererrorregister {
+.wrapperErrorRegister {
     height: auto;
 }
 
