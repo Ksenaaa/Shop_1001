@@ -1,6 +1,7 @@
-import React, { ChangeEvent, FC, useState } from 'react'
-import LoadingCircular from '../../../component/LoadingCircular'
+import React, { ChangeEvent, FC, useCallback, useState } from 'react'
 import { Button } from '@material-ui/core'
+
+import LoadingCircular from '../../../component/LoadingCircular'
 import { RadioButtonRegistration } from '../../../component/RadioButtonRegistration'
 import { useHttp } from '../../../hooks/http.hook'
 import { TextFields } from '../../../component/Input'
@@ -17,24 +18,31 @@ type RegisterUser = {
     role: string,
 }
 
-export const ModalRegistration:FC<ModalWindow> = ({onClose}) => {
-    const [form, setForm] = useState<RegisterUser>({email:'', name:'', password:'', checkPassword:'', role:'buyer'})
+export const ModalRegistration: FC<ModalWindow> = ({onClose}) => {
+    const [form, setForm] = useState<RegisterUser>({email: '', name: '', password: '', checkPassword: '', role: 'buyer'})
     const {loading, request, errorsValid} = useHttp()
-    const changeHandler = (event: ChangeEvent<HTMLInputElement>): void => {
+    
+    const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         setForm({...form, [event.target.name]: event.target.value})
-    }
+    }, [form]) 
 
-    const registrationHandler = async () => {
-        const data = await request({url: 'api/auth/register', method: 'POST', body: {...form} })
+    const registrationHandler = useCallback(async() => {
+        const data = await request({url: 'api/auth/register', method: 'POST', body: {...form}})
         if(!data) return ''
         onClose()
+    }, [onClose, form]) 
+
+    const classes = {
+        wrapWithErr: "wrapperLogin wrapperregister wrappererrorregister",
+        wrap: "wrapperLogin wrapperregister"
     }
 
     return (
-        <form noValidate autoComplete="off" className={errorsValid
-                            ?"wrapperLogin wrapperregister wrappererrorregister"
-                            :"wrapperLogin wrapperregister"
-        }>
+        <form 
+            noValidate 
+            autoComplete="off" 
+            className={errorsValid ? classes.wrapWithErr : classes.wrap}
+        >
             {loading && <LoadingCircular/>}
             <h2>Registration</h2> 
             <TextFields

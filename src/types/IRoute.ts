@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Main } from "../pages/main/Main";
 import { Auth } from "../pages/auth/Auth";
 
@@ -10,7 +11,7 @@ export interface IRoute {
 
 export enum RouteNames {
     LOGIN = '/login',
-    GOODS = '/goods'
+    MAIN = '/main'
 }
 
 export const publicRoutes: IRoute[] = [
@@ -18,5 +19,5 @@ export const publicRoutes: IRoute[] = [
 ]
 
 export const privateRoutes: IRoute[] = [
-    {path: RouteNames.GOODS, exact: true, element: Main}
+    {path: RouteNames.MAIN, exact: true, element: Main}
 ]

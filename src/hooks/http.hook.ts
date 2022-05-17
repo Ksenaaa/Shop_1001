@@ -1,13 +1,14 @@
 import { useCallback, useState } from "react"
+import { ErrorType } from "../utils/ErrorsHanding"
 
 type RequestType = {
     url: string,
     method?: string, 
     body?: any, 
-    headers?: { [x: string]: string },
+    headers?: {[x: string]: string},
 }
 
-type ErrorType = {
+type ErrorMapType = {
     param: string,
     msg: string,
 }
@@ -15,13 +16,13 @@ type ErrorType = {
 export const useHttp = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
-    const [errorsValid, setErrorsValid] = useState(null)
+    const [errorsValid, setErrorsValid] = useState<ErrorType[] | null>(null)
 
-    const request = useCallback(async ( {url, method = 'GET', body, headers = {}}: RequestType )=> {
+    const request = useCallback(async({url, method = 'GET', body, headers = {}}: RequestType) => {
         setLoading(true)
 
         try {
-            if (body) {
+            if(body) {
                 body = JSON.stringify(body)
                 headers['Content-Type'] = 'application/json'
             }
@@ -29,8 +30,8 @@ export const useHttp = () => {
             const response = await fetch(url, {method, body, headers})
             const data = await response.json()
 
-            if(!response.ok) { 
-                const errors = data.errors.map((error: ErrorType) => ({
+            if(!response.ok) {
+                const errors = data.errors.map((error: ErrorMapType) => ({
                     errorField: error.param,
                     errorText: error.msg
                 }))
@@ -47,7 +48,7 @@ export const useHttp = () => {
         } finally {
             setTimeout(() => {
                 setLoading(false)
-            },1000) 
+            }, 1000) 
         }
     }, [])
 

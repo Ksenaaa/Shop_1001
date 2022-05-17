@@ -1,5 +1,6 @@
-import React, { ChangeEvent, FC, useContext, useState } from 'react'
+import React, { ChangeEvent, FC, useCallback, useContext, useState } from 'react'
 import { Button } from '@material-ui/core'
+
 import { useHttp } from '../../../hooks/http.hook';
 import { AuthContext } from '../../../tools/Context';
 import { TextFields } from '../../../component/Input';
@@ -10,19 +11,27 @@ type ModalLoginType = {
     onClick: () => void
 }
 
-export const ModalLogin:FC<ModalLoginType> = ({onClick}) => {
-    const auth = useContext(AuthContext)
+export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
+    const {login} = useContext(AuthContext)
     const [form, setForm] = useState({email: '', password: ''})
     const {loading, request, errorsValid} = useHttp()
         
-    const changeHandler = (event: ChangeEvent<HTMLInputElement>): void => {
+    const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         setForm({...form, [event.target.name]: event.target.value})
-    }
+    }, [form]) 
 
-    const loginHandler = async () => {
-        const data = await request({ url: 'api/auth/login', method: 'POST', body: {...form} }) 
-        auth.login(data.token)
-    }
+    const loginHandler = useCallback(async() => {
+        const data = await request({url: 'api/auth/login', method: 'POST', body: {...form}}) 
+        login({
+            jwtToken: data.jwtToken,
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            icon: data.icon,
+            role: data.role,
+        })
+    }, [login]) 
+        
     return (
         <div className="wrapperLogin">
             <h2>LOGIN PAGE</h2> 

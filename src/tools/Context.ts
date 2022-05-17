@@ -1,7 +1,14 @@
 import { createContext } from "react";
 import { UserAuth } from "../hooks/auth.hook";
+import { IUser } from "../types/IUser";
 
-export const AuthContext = createContext({ 
+type AuthContextType = {
+    userAuth: IUser,
+    login: ({jwtToken, id, name, email, icon, role}:UserAuth) => void,
+    logout: () => void,
+}
+
+export const AuthContext = createContext<AuthContextType>({ 
     userAuth: {
         token: '',
         userId: '',
@@ -10,6 +17,8 @@ export const AuthContext = createContext({
         userIcon: '',
         userRole: ''
     },
-    login: ({jwtToken, id, name, email, icon, role}:UserAuth) => {},
+
+    login: ({jwtToken, id, name, email, icon, role}: UserAuth) => {},
+    
     logout: () => {},
 })

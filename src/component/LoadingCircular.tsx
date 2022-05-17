@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export default function LoadingCircular() {
   const classes = useStyles();
 
@@ -28,5 +27,5 @@ export default function LoadingCircular() {
     <div className={classes.root}>
       <CircularProgress color="primary" />
     </div>
-  );
+  )
 }

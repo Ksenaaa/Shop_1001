@@ -1,17 +1,18 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC, useCallback, useMemo } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { errorsForNameData, ErrorType } from '../utils/ErrorsHanding';
 
 type InputType = {
   label: string,
   type: string,
   errors: ErrorType[] | null,
-  onChange(e:ChangeEvent<HTMLInputElement>): void,
+  onChange(e: ChangeEvent<HTMLInputElement>): void,
   name: string,
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles( (theme) => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
@@ -20,10 +21,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const TextFields:FC<InputType> = ({label, type, errors, onChange, name}) => {
+export const TextFields: FC<InputType> = ({label, type, errors, onChange, name}) => {
   const classes = useStyles();
 
-  const error = errorsForNameData({name, errors})
+  const error = useMemo(() => errorsForNameData({name, errors}), [name, errors]) 
   
   return (
     <div className={classes.root} >
@@ -37,5 +38,5 @@ export const TextFields:FC<InputType> = ({label, type, errors, onChange, name}) 
           helperText={error}
         />    
     </div>
-  );
+  )
 }
