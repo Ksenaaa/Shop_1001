@@ -1,0 +1,5 @@
+{
+    "port": 3002,
+    "jwtSecret": "sekret key",
+    "mongoUri": "mongodb+srv://Admin:Qwert-11@cluster0.mksvz.mongodb.net/Shop_1001_DB?retryWrites=true&w=majority"
+}
