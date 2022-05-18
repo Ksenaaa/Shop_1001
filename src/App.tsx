@@ -1,28 +1,21 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import { publicRoutes, RouteNames } from './types/IRoute';
+import AuthProvider from './context/AuthProvider'
+import { Header } from './component/Header';
+import { Router } from './component/Router';
 
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>   
-          {publicRoutes.map(route =>
-            <Route
-              path={route.path}
-              element={<route.element />} 
-              key={route.path}
-            />
-          )}  
-          <Route 
-            path='*'
-            element={<Navigate to={RouteNames.LOGIN} replace/>} 
-          />
-        </Routes> 
-      </BrowserRouter>
-    </div>
+    <AuthProvider>
+      <div className="App">
+        <Header />
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </div>
+    </AuthProvider>
   )
 }
 

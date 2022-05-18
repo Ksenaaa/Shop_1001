@@ -2,8 +2,9 @@ import React, { ChangeEvent, FC, useCallback, useContext, useState } from 'react
 import { Button } from '@material-ui/core'
 
 import { useHttp } from '../../../hooks/http.hook';
-import { AuthContext } from '../../../tools/Context';
+import { AuthContext } from '../../../context/AuthContext';
 import { TextFields } from '../../../component/Input';
+import LoadingCircular from '../../../component/LoadingCircular';
 
 import '../../../App.css';
 
@@ -11,29 +12,39 @@ type ModalLoginType = {
     onClick: () => void
 }
 
+type LoginUser = {
+    email: string, 
+    password: string, 
+}
+
 export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
     const {login} = useContext(AuthContext)
-    const [form, setForm] = useState({email: '', password: ''})
+    const [form, setForm] = useState<LoginUser>({email: '', password: ''})
     const {loading, request, errorsValid} = useHttp()
-        
+
     const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         setForm({...form, [event.target.name]: event.target.value})
     }, [form]) 
 
     const loginHandler = useCallback(async() => {
-        const data = await request({url: 'api/auth/login', method: 'POST', body: {...form}}) 
+        const data = await request({url: 'api/auth/login', method: 'POST', body: {...form}})
         login({
-            jwtToken: data.jwtToken,
+            jwtToken: data.token,
             id: data.id,
             name: data.name,
             email: data.email,
             icon: data.icon,
             role: data.role,
         })
-    }, [login]) 
+    }, [login, form])
         
     return (
-        <div className="wrapperLogin">
+        <form 
+            noValidate 
+            autoComplete="off" 
+            className="wrapperLogin"
+        >
+            {loading && <LoadingCircular/>}
             <h2>LOGIN PAGE</h2> 
             <TextFields
                 label="Email" 
@@ -62,6 +73,6 @@ export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
                     Login
                 </Button>
             </div>
-        </div>
+        </form>
     )
 }

@@ -1,19 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { IUser } from '../types/IUser'
+import { IUser } from '../interface/IUser'
+import { IUserAuth } from '../interface/IUserAuth'
 
 const storageName = 'userData'
 
-export type UserAuth = {
-   jwtToken: string, 
-   id: string, 
-   name: string, 
-   email: string,
-   icon: string,
-   role: string
-}
-
 export const useAuth = () => {
+   const [token, setToken] = useState('')
    const [userAuth, setUserAuth] = useState<IUser>({
       token: '',
       userId: '',
@@ -22,8 +15,8 @@ export const useAuth = () => {
       userIcon: '',
       userRole: ''
    })
-   
-   const login = useCallback(({jwtToken, id, name, email, icon, role}: UserAuth) => {
+
+   const login = useCallback(({jwtToken, id, name, email, icon, role}: IUserAuth) => {
       setUserAuth({
          token: jwtToken,
          userId: id,
@@ -32,6 +25,8 @@ export const useAuth = () => {
          userIcon: icon,
          userRole: role
       })
+
+      setToken(jwtToken)
 
       localStorage.setItem(storageName, JSON.stringify({
          token: jwtToken,
@@ -58,6 +53,7 @@ export const useAuth = () => {
 
    useEffect(() => {
       const data = JSON.parse(localStorage.getItem(storageName) as string)
+      
       if(data && data.token) {
          login({
             jwtToken: data.token,
@@ -70,5 +66,5 @@ export const useAuth = () => {
       }
    }, [login])
 
-   return {login, logout, userAuth}
+   return {login, logout, userAuth, token}
 }

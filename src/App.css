@@ -5,7 +5,7 @@
 
 .wrapperLogin {
     margin: 100px auto;
-    height: 300px;
+    min-height: 270px;
     width: 370px;
     border: 2px solid rgb(209, 205, 205);
     background-color: rgb(241, 240, 240);

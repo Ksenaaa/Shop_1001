@@ -1,11 +1,13 @@
 import { createContext } from "react";
-import { UserAuth } from "../hooks/auth.hook";
-import { IUser } from "../types/IUser";
+
+import { IUser } from "../interface/IUser";
+import { IUserAuth } from "../interface/IUserAuth";
 
 type AuthContextType = {
     userAuth: IUser,
-    login: ({jwtToken, id, name, email, icon, role}:UserAuth) => void,
+    login: (user: IUserAuth) => void,
     logout: () => void,
+    token: string,
 }
 
 export const AuthContext = createContext<AuthContextType>({ 
@@ -17,8 +19,7 @@ export const AuthContext = createContext<AuthContextType>({
         userIcon: '',
         userRole: ''
     },
-
-    login: ({jwtToken, id, name, email, icon, role}: UserAuth) => {},
-    
+    login: ({ jwtToken, id, name, email, icon, role }: IUserAuth) => {},
     logout: () => {},
+    token: ''
 })
