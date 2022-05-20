@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FC, useCallback, useMemo } from 'react';
+import React, { ChangeEvent, FC, useMemo } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 
-import { errorsForNameData, ErrorType } from '../utils/ErrorsHanding';
+import { errorsForNameData, ErrorType } from '../../utils/ErrorsHanding';
+import { useStyles } from './style';
 
 type InputType = {
   label: string,
@@ -11,15 +11,6 @@ type InputType = {
   onChange(e: ChangeEvent<HTMLInputElement>): void,
   name: string,
 }
-
-const useStyles = makeStyles( (theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: '35.6ch',
-    },
-  },
-}));
 
 export const TextFields: FC<InputType> = ({label, type, errors, onChange, name}) => {
   const classes = useStyles();

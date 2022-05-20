@@ -1,17 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { IUser } from '../types/IUser'
+import { IUser } from '../interface/IUser'
+import { IUserAuth } from '../interface/IUserAuth'
 
 const storageName = 'userData'
-
-export type UserAuth = {
-   jwtToken: string, 
-   id: string, 
-   name: string, 
-   email: string,
-   icon: string,
-   role: string
-}
 
 export const useAuth = () => {
    const [userAuth, setUserAuth] = useState<IUser>({
@@ -22,8 +14,8 @@ export const useAuth = () => {
       userIcon: '',
       userRole: ''
    })
-   
-   const login = useCallback(({jwtToken, id, name, email, icon, role}: UserAuth) => {
+
+   const login = useCallback(({jwtToken, id, name, email, icon, role}: IUserAuth) => {
       setUserAuth({
          token: jwtToken,
          userId: id,
@@ -58,6 +50,7 @@ export const useAuth = () => {
 
    useEffect(() => {
       const data = JSON.parse(localStorage.getItem(storageName) as string)
+      
       if(data && data.token) {
          login({
             jwtToken: data.token,
