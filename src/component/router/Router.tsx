@@ -1,8 +1,8 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { AuthContext } from '../context/AuthContext';
-import { privateRoutes, publicRoutes, RouteNames } from '../interface/IRoute';
+import { AuthContext } from '../../context/AuthContext';
+import { privateRoutes, publicRoutes, RouteNames } from '../../interface/IRoute';
 
 export const Router = () => {
     const {userAuth} = useContext(AuthContext)

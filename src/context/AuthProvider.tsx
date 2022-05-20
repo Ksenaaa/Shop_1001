@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 
 import { AuthContext } from './AuthContext';
 import { useAuth } from '../hooks/auth.hook';

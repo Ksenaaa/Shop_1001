@@ -37,7 +37,7 @@ router.post(
             .isLength({min:1}).withMessage('Enter checkpassword!')
             .custom(async (checkPassword, {req}) => {
                 const password = req.body.password
-                if(password !== checkPassword){
+                if(password !== checkPassword) {
                   throw new Error('Passwords do not match!')
                 }
               }),
@@ -47,7 +47,7 @@ router.post(
     async (req, res) => {
         try{    
             const errors = validationResult(req)
-            if(!errors.isEmpty()){
+            if(!errors.isEmpty()) {
                 return res.status(400).json({ 
                     errors: errors.array(),
                 })
@@ -98,7 +98,7 @@ router.post(
     async (req, res) => {
         try{    
             const errors = validationResult(req)
-            if(!errors.isEmpty()){
+            if(!errors.isEmpty()) {
                 return res.status(400).json({ 
                     errors: errors.array(),
                 })

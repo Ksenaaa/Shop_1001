@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, memo } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';

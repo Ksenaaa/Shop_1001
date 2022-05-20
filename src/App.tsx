@@ -1,8 +1,9 @@
+import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
 
 import AuthProvider from './context/AuthProvider'
-import { Header } from './component/Header';
-import { Router } from './component/Router';
+import { Header } from './component/header/Header';
+import { Router } from './component/router/Router';
 
 import './App.css';
 

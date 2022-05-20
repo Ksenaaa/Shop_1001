@@ -3,8 +3,8 @@ import { Button } from '@material-ui/core'
 
 import { useHttp } from '../../../hooks/http.hook';
 import { AuthContext } from '../../../context/AuthContext';
-import { TextFields } from '../../../component/Input';
-import LoadingCircular from '../../../component/LoadingCircular';
+import { TextFields } from '../../../component/input/Input';
+import LoadingCircular from '../../../component/loading/LoadingCircular';
 
 import '../../../App.css';
 
