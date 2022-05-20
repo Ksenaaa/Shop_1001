@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const {check, validationResult} = require('express-validator') 
 const User = require('../models/User')  
 const router = Router() 
+const bcrypt = require('bcrypt')
 
 router.post(
     '/register', 
@@ -44,25 +45,27 @@ router.post(
             .isLength({min:1}).withMessage('Select a role!'),
     ],
     async (req, res) => {
-    try{    
-        const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({ 
-                errors: errors.array(),
-            })
+        try{    
+            const errors = validationResult(req)
+            if(!errors.isEmpty()){
+                return res.status(400).json({ 
+                    errors: errors.array(),
+                })
+            }
+
+            const {name, email, password, role} = req.body 
+            const hashPassword = await bcrypt.hash(password, 3)
+            const icon = 'https://cdn-icons.flaticon.com/png/512/2102/premium/2102647.png?token=exp=1652252114~hmac=64505589ce2e32fe6c5a7a7de8871cda'
+            const user = new User({name, email, password: hashPassword, icon, role})
+            
+            await user.save()
+
+            res.status(201).json({message: "User are created"})  
+        } catch (e) {
+            res.status(500).json({message: "its Error, try again!"})  
         }
-
-        const {name, email, password, role} = req.body 
-        const icon = 'https://cdn-icons.flaticon.com/png/512/2102/premium/2102647.png?token=exp=1652252114~hmac=64505589ce2e32fe6c5a7a7de8871cda'
-        const user = new User({name, email, password, icon, role})
-        
-        await user.save()
-
-        res.status(201).json({message: "User are created"})  
-    } catch (e) {
-        res.status(500).json({message: "its Error, try again!"})  
     }
-})
+)
 
 router.post(
     '/login', 
@@ -80,12 +83,12 @@ router.post(
         check('password')
             .isLength({min:1}).withMessage('Enter password!')
             .custom(async(password, {req}) => {
-                const passwordUser = req.body.password
-                if(passwordUser) {
+                if(password) {
                     const emailUser = req.body.email
                     const findUser = await User.findOne({email: emailUser}) 
                     if(findUser) {
-                        if(findUser.password !== password) {
+                        const isPassEquals = await bcrypt.compare(password, findUser.password)
+                        if(!isPassEquals) {
                             throw new Error('Password do not match!') 
                         }
                     }
@@ -93,39 +96,41 @@ router.post(
             }),
     ],
     async (req, res) => {
-    try{    
-        const errors = validationResult(req)
-        if(!errors.isEmpty()){
-            return res.status(400).json({ 
-                errors: errors.array(),
-            })
-        }
-
-        const {email, password} = req.body 
-
-        const findUser = await User.findOne({email}) 
-        if(findUser.email === email) {
-            if(findUser.password === password) {               
-                const token = jwt.sign(
-                    {id: findUser.id},
-                    config.get('jwtSecret'),
-                    {expiresIn: '1h'}
-                )
-
-                res.json({
-                    token,
-                    id: findUser.id,
-                    name: findUser.name, 
-                    email: findUser.email,
-                    icon: findUser.icon,
-                    role: findUser.role,
+        try{    
+            const errors = validationResult(req)
+            if(!errors.isEmpty()){
+                return res.status(400).json({ 
+                    errors: errors.array(),
                 })
-                res.status(201).json({message: `User ${findUser.email} login`}) 
-            } 
+            }
+
+            const {email, password} = req.body 
+            const findUser = await User.findOne({email}) 
+            const isPassEquals = await bcrypt.compare(password, findUser.password)
+
+            if(findUser.email === email) {
+                if(isPassEquals) {               
+                    const token = jwt.sign(
+                        {id: findUser.id},
+                        config.get('jwtSecret'),
+                        {expiresIn: '20s'}
+                    )
+
+                    res.json({
+                        token,
+                        id: findUser.id,
+                        name: findUser.name, 
+                        email: findUser.email,
+                        icon: findUser.icon,
+                        role: findUser.role,
+                    })
+                    res.status(201).json({message: `User ${findUser.email} login`}) 
+                } 
+            }
+        } catch (e) {
+            res.status(500).json({message: "its Error, try again!"})  
         }
-    } catch (e) {
-        res.status(500).json({message: "its Error, try again!"})  
     }
-})
+)
 
 module.exports = router

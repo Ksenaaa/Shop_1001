@@ -9,7 +9,7 @@ export const Router = () => {
 
     return (
       <>
-        {!userAuth.userId
+        {!userAuth.token
         ?
         <Routes>   
           {publicRoutes.map(route =>

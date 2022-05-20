@@ -6,7 +6,6 @@ import { IUserAuth } from '../interface/IUserAuth'
 const storageName = 'userData'
 
 export const useAuth = () => {
-   const [token, setToken] = useState('')
    const [userAuth, setUserAuth] = useState<IUser>({
       token: '',
       userId: '',
@@ -25,8 +24,6 @@ export const useAuth = () => {
          userIcon: icon,
          userRole: role
       })
-
-      setToken(jwtToken)
 
       localStorage.setItem(storageName, JSON.stringify({
          token: jwtToken,
@@ -66,5 +63,5 @@ export const useAuth = () => {
       }
    }, [login])
 
-   return {login, logout, userAuth, token}
+   return {login, logout, userAuth}
 }

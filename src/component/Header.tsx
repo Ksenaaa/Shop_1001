@@ -1,11 +1,10 @@
-import React, { ChangeEvent, useContext } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -75,63 +74,66 @@ const useStyles = makeStyles((theme) => ({
 
 export const Header = () => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const {logout} = useContext(AuthContext)
+  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
+  const {logout, userAuth} = useContext(AuthContext)
 
-  const isMenuOpen = Boolean(anchorEl);
-
-  const handleProfileMenuOpen = ((event: ChangeEvent<any>): void => {
-    setAnchorEl(event.currentTarget);
-  })
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleMenuOpen = () => setMenuOpen(true)
+  const handleMenuClose = () => setMenuOpen(false)
+  const handleMenuCloseExitUser = () => {
+    setMenuOpen(false)
     logout()
   }
 
+  const ref = useRef(null)
+
   return (
-    <div className={classes.grow}>
+    <div className={classes.grow} ref={ref}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+          {(userAuth.token) ?
+            <>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography className={classes.title} variant="h6" noWrap>
             Page
-          </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
+            </Typography>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+              />
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
-          <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton color="inherit">
-                <MailIcon />
-            </IconButton>
-            <IconButton color="inherit">
-                <ShoppingBasketIcon />
-            </IconButton>
-            <IconButton color="inherit" onClick={handleProfileMenuOpen}>
-              <AccountCircle />
-            </IconButton>
-          </div>
+            <div className={classes.grow} />
+            <div className={classes.sectionDesktop}>
+              <IconButton color="inherit">
+                  <MailIcon />
+              </IconButton>
+              <IconButton color="inherit">
+                  <ShoppingBasketIcon />
+              </IconButton>
+              <IconButton color="inherit" onClick={handleMenuOpen}>
+                <AccountCircle />
+              </IconButton>
+            </div>
+            </>
+            : ""
+          }
         </Toolbar>
       </AppBar>
       <Menu
-        anchorEl={anchorEl}
+        anchorEl={ref?.current}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -139,7 +141,7 @@ export const Header = () => {
         onClose={handleMenuClose}
       >
         <MenuItem onClick={handleMenuClose}>My profil</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Exit</MenuItem>
+        <MenuItem onClick={handleMenuCloseExitUser}>Exit</MenuItem>
       </Menu>
     </div>
   )

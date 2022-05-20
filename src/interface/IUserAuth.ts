@@ -1,4 +1,4 @@
-export type IUserAuth = {
+export interface IUserAuth {
     jwtToken: string, 
     id: string, 
     name: string, 
