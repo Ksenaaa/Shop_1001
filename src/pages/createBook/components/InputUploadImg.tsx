@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useCallback, useEffect, useMemo, useState } from "react"
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
-import { errorsForNameData, ErrorType } from "../../../utils/ErrorsHanding"
+import { handleErrors, ErrorType } from "../../../utils/ErrorsHanding"
 
 import '../style.css'
 
@@ -31,7 +31,7 @@ export const InputUploadImg: FC<InputFileType> = ({onChange, errors, type, name,
         setImg(file)
     }, [img])
 
-    const error = useMemo(() => errorsForNameData({name, errors}), [name, errors]) 
+    const error = useMemo(() => handleErrors({name, errors}), [name, errors]) 
 
     return (
         <>

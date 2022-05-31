@@ -17,14 +17,13 @@ import { useStyles } from './style';
 import { MenuList } from './components/MenuList';
 
 export const Header = () => {
-  const classes = useStyles()
   const [isMenuUserOpen, setMenuUserOpen] = useState<boolean>(false)
   const [isMenuListOpen, setMenuListOpen] = useState<boolean>(false)
+  const classes = useStyles()
   const {logout, userAuth} = useContext(AuthContext)
   const ref = useRef(null)
 
-  const handleMenuUserClose = () => setMenuUserOpen(false)
-  const handleMenuUserCloseExitUser = () => {
+  const onLogout = () => {
     setMenuUserOpen(false)
     logout()
   }
@@ -88,10 +87,10 @@ export const Header = () => {
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuUserOpen}
-        onClose={handleMenuUserClose}
+        onClose={() => setMenuUserOpen(false)}
       >
-        <MenuItem onClick={handleMenuUserClose}>My profil</MenuItem>
-        <MenuItem onClick={handleMenuUserCloseExitUser}>Exit</MenuItem>
+        <MenuItem onClick={() => setMenuUserOpen(false)}>My profil</MenuItem>
+        <MenuItem onClick={onLogout}>Exit</MenuItem>
       </Menu>
     </div>
   )

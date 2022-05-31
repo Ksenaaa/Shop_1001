@@ -28,8 +28,8 @@ type FormBookType = {
 }
 
 export const CreateBook = () => {
-    const {userAuth} = useContext(AuthContext)
     const [form, setForm] = useState<Record<string, keyof FormBookType>>({})
+    const {userAuth} = useContext(AuthContext)
     const {loading, request, errorsValid, clearError} = useHttp()
     const closeCreatePage = useNavigate()
 

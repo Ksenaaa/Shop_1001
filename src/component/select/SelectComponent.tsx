@@ -4,7 +4,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-import { errorsForNameData, ErrorType } from '../../utils/ErrorsHanding';
+import { handleErrors, ErrorType } from '../../utils/ErrorsHanding';
 import { useStyles } from './style';
 
 type SelectType = {
@@ -19,7 +19,7 @@ type SelectType = {
 export const SelectComponent: FC<SelectType> = ({label, name, errors, onChange, children, value}) => {
   const classes = useStyles()
 
-  const error = useMemo(() => errorsForNameData({name, errors}), [name, errors]) 
+  const error = useMemo(() => handleErrors({name, errors}), [name, errors]) 
 
   return (
     <FormControl 

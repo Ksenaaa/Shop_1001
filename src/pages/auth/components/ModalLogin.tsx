@@ -18,8 +18,8 @@ type LoginUser = {
 }
 
 export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
-    const {login} = useContext(AuthContext)
     const [form, setForm] = useState<LoginUser>({email: '', password: ''})
+    const {login} = useContext(AuthContext)
     const {loading, request, errorsValid} = useHttp()
 
     const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {

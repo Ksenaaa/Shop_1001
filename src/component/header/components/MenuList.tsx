@@ -15,18 +15,17 @@ export const MenuList = () => {
   const {userAuth} = useContext(AuthContext)
 
   return (
-    <>
-      <NestedList className={classes.nestedList}>
-        <>
-          <Link to={RouteNames.MAIN} className={classes.linkNested}>
-            <NestedListItem
-              itemText="Main"
-            >
-              <HomeIcon />
-            </NestedListItem>
-          </Link>
-          {(userAuth.userRole !== 'buyer') &&
-            <>
+    <NestedList className={classes.nestedList}>
+      <>
+        <Link to={RouteNames.MAIN} className={classes.linkNested}>
+          <NestedListItem
+            itemText="Main"
+          >
+            <HomeIcon />
+          </NestedListItem>
+        </Link>
+        {(userAuth.userRole !== 'buyer') &&
+          <>
             <Link to={RouteNames.CREATE_BOOK} className={classes.linkNested}>
               <NestedListItem
                 itemText="Create product"
@@ -41,10 +40,9 @@ export const MenuList = () => {
                 <CollectionsBookmarkIcon />
               </NestedListItem>
             </Link>
-            </>
-          }
-        </>
-      </NestedList>
-    </>
+          </>
+        }
+      </>
+    </NestedList>
   )
 }
