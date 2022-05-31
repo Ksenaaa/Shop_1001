@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, useCallback, useState } from 'react'
 import { Button } from '@material-ui/core'
 import cn from 'classnames'
 
-import LoadingCircular from '../../../component/loading/LoadingCircular'
+import { LoadingCircular } from '../../../component/loading/LoadingCircular'
 import { RadioButtonRegistration } from '../../../component/radioButton/RadioButtonRegistration'
 import { useHttp } from '../../../hooks/http.hook'
 import { TextFields } from '../../../component/input/Input'

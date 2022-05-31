@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FC, useMemo } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { formatValue } from 'react-currency-input-field';
 
 import { errorsForNameData, ErrorType } from '../../utils/ErrorsHanding';
 import { useStyles } from './style';
@@ -10,13 +11,15 @@ type InputType = {
   errors: ErrorType[] | null,
   onChange(e: ChangeEvent<HTMLInputElement>): void,
   name: string,
+  value?: string,
 }
 
-export const TextFields: FC<InputType> = ({label, type, errors, onChange, name}) => {
+export const TextFields: FC<InputType> = ({label, type, errors, onChange, name, value}) => {
   const classes = useStyles();
 
   const error = useMemo(() => errorsForNameData({name, errors}), [name, errors]) 
   
+
   return (
     <div className={classes.root} >
         <TextField
@@ -26,6 +29,7 @@ export const TextFields: FC<InputType> = ({label, type, errors, onChange, name})
           type={type}
           onChange={onChange}
           name={name}
+          value={value}
           helperText={error}
         />    
     </div>

@@ -5,40 +5,40 @@ import { AuthContext } from '../../context/AuthContext';
 import { privateRoutes, publicRoutes, RouteNames } from '../../interface/IRoute';
 
 export const Router = () => {
-    const {userAuth} = useContext(AuthContext)
+  const {userAuth} = useContext(AuthContext)
 
-    return (
-      <>
-        {!userAuth.token
-        ?
-        <Routes>   
-          {publicRoutes.map(route =>
-            <Route
-              path={route.path}
-              element={<route.element />} 
-              key={route.path}
-            />
-          )}  
-          <Route 
-            path='*'
-            element={<Navigate to={RouteNames.LOGIN} replace/>} 
+  return (
+    <>
+      {!userAuth.token
+      ?
+      <Routes>   
+        {publicRoutes.map(route =>
+          <Route
+            path={route.path}
+            element={<route.element />} 
+            key={route.path}
           />
-        </Routes> 
-        :
-        <Routes>   
-          {privateRoutes.map(route =>
-            <Route
-              path={route.path}
-              element={<route.element />} 
-              key={route.path}
-            />
-          )}  
-          <Route 
-            path='*'
-            element={<Navigate to={RouteNames.MAIN} replace/>} 
+        )}  
+        <Route 
+          path='*'
+          element={<Navigate to={RouteNames.LOGIN} replace/>} 
+        />
+      </Routes> 
+      :
+      <Routes>   
+        {privateRoutes.map(route =>
+          <Route
+            path={route.path}
+            element={<route.element />} 
+            key={route.path}
           />
-        </Routes> 
-        }
-      </>
+        )}  
+        <Route 
+          path='*'
+          element={<Navigate to={RouteNames.MAIN} replace/>} 
+        />
+      </Routes> 
+      }
+    </>
   )
 }

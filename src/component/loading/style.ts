@@ -9,7 +9,7 @@ export const useStyles = makeStyles((theme) => ({
     zIndex: 10,
     top: 0,
     left: 0,
-    height: '100vh',
+    height: '100%',
     width: '100%',
     background: 'rgba(2,2,2,0.3)',
     '& > * + *': {

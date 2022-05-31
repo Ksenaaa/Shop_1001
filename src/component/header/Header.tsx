@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, ChangeEvent, useCallback } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,36 +14,44 @@ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 
 import { AuthContext } from '../../context/AuthContext';
 import { useStyles } from './style';
+import { MenuList } from './components/MenuList';
 
 export const Header = () => {
-  const classes = useStyles();
-  const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
+  const classes = useStyles()
+  const [isMenuUserOpen, setMenuUserOpen] = useState<boolean>(false)
+  const [isMenuListOpen, setMenuListOpen] = useState<boolean>(false)
   const {logout, userAuth} = useContext(AuthContext)
+  const ref = useRef(null)
 
-  const handleMenuOpen = () => setMenuOpen(true)
-  const handleMenuClose = () => setMenuOpen(false)
-  const handleMenuCloseExitUser = () => {
-    setMenuOpen(false)
+  const handleMenuUserClose = () => setMenuUserOpen(false)
+  const handleMenuUserCloseExitUser = () => {
+    setMenuUserOpen(false)
     logout()
   }
-
-  const ref = useRef(null)
 
   return (
     <div className={classes.grow} ref={ref}>
       <AppBar position="static">
         <Toolbar>
-          {(userAuth.token) ?
+          {userAuth.token &&
             <>
             <IconButton
               edge="start"
               className={classes.menuButton}
               color="inherit"
+              onClick={() => setMenuListOpen(true)}
             >
               <MenuIcon />
             </IconButton>
+
+            {isMenuListOpen &&
+              <div onClick={() => setMenuListOpen(false)} className={classes.closeMenu}>
+                <MenuList/>
+              </div>
+            }
+
             <Typography className={classes.title} variant="h6" noWrap>
-            Page
+              Page
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -66,12 +74,11 @@ export const Header = () => {
               <IconButton color="inherit">
                   <ShoppingBasketIcon />
               </IconButton>
-              <IconButton color="inherit" onClick={handleMenuOpen}>
+              <IconButton color="inherit" onClick={() => setMenuUserOpen(true)}>
                 <AccountCircle />
               </IconButton>
             </div>
             </>
-            : ""
           }
         </Toolbar>
       </AppBar>
@@ -80,11 +87,11 @@ export const Header = () => {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
+        open={isMenuUserOpen}
+        onClose={handleMenuUserClose}
       >
-        <MenuItem onClick={handleMenuClose}>My profil</MenuItem>
-        <MenuItem onClick={handleMenuCloseExitUser}>Exit</MenuItem>
+        <MenuItem onClick={handleMenuUserClose}>My profil</MenuItem>
+        <MenuItem onClick={handleMenuUserCloseExitUser}>Exit</MenuItem>
       </Menu>
     </div>
   )

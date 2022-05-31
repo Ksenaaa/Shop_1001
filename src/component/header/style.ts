@@ -55,4 +55,29 @@ export const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
   },
+  closeMenu: {
+    height: '100%',
+    padding: '100%',
+    position:'absolute',
+    zIndex: 10,
+    left: 0,
+    top: 0,
+  },
+  nestedList: {
+    width: '100%',
+    maxWidth: 260,
+    backgroundColor: theme.palette.background.paper,
+    display: 'block',
+    opacity:1,
+    position: 'absolute',
+    left: 0,
+    top: '6ch',
+    boxShadow: '0px 5px 5px -3px rgb(0 0 0 / 20%), 0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%)',
+    borderRadius: '4px',
+    transform: 'scale(1)',
+    transition: '0.5s',
+  },
+  linkNested: {
+    textDecoration: 'none',
+  }
 }));
