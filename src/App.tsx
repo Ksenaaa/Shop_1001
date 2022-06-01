@@ -11,8 +11,8 @@ const App = () => {
   return (
     <AuthProvider>
       <div className="App">
-        <Header />
         <BrowserRouter>
+          <Header />
           <Router />
         </BrowserRouter>
       </div>

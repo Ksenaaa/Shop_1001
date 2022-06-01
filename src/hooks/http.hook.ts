@@ -7,6 +7,7 @@ type RequestType = {
     method?: string, 
     body?: any, 
     headers?: {[x: string]: string},
+    notJsonContent?: boolean
 }
 
 type ErrorMapType = {
@@ -19,11 +20,11 @@ export const useHttp = () => {
     const [error, setError] = useState(null)
     const [errorsValid, setErrorsValid] = useState<ErrorType[] | null>(null)
 
-    const request = useCallback(async({url, method = 'GET', body, headers = {}}: RequestType) => {
+    const request = useCallback(async({url, method = 'GET', body, headers = {}, notJsonContent = false}: RequestType) => {
         setLoading(true)
 
         try {
-            if(body) {
+            if(body && !notJsonContent) {
                 body = JSON.stringify(body)
                 headers['Content-Type'] = 'application/json'
             }

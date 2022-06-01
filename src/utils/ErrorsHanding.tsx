@@ -10,7 +10,7 @@ export type ErrorType = {
     errorField: string,
 }
 
-export const errorsForNameData = ({name, errors}: ErrorsType) => {
+export const handleErrors = ({name, errors}: ErrorsType) => {
     if(!errors?.length) return ''
 
     return errors
