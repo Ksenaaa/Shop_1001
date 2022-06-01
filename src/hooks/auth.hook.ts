@@ -1,67 +1,42 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { IUser } from '../interface/IUser'
 import { IUserAuth } from '../interface/IUserAuth'
 
 const storageName = 'userData'
 
+const initialData = {
+   token: '',
+   userId: '',
+   userName: '',
+   userEmail: '',
+   userIcon: '',
+   userRole: ''
+}
+
 export const useAuth = () => {
-   const [userAuth, setUserAuth] = useState<IUser>({
-      token: '',
-      userId: '',
-      userName: '',
-      userEmail: '',
-      userIcon: '',
-      userRole: ''
-   })
+   const userData = JSON.parse(localStorage.getItem(storageName) as string) || initialData
+
+   const [userAuth, setUserAuth] = useState<IUser>({...userData})
 
    const login = useCallback(({jwtToken, id, name, email, icon, role}: IUserAuth) => {
-      setUserAuth({
+      const userInfo = {
          token: jwtToken,
          userId: id,
          userName: name,
          userEmail: email,
          userIcon: icon,
          userRole: role
-      })
+      }
 
-      localStorage.setItem(storageName, JSON.stringify({
-         token: jwtToken,
-         userId: id,
-         userName: name,
-         userEmail: email,
-         userIcon: icon,
-         userRole: role
-      }))
+      setUserAuth({...userInfo})
+      localStorage.setItem(storageName, JSON.stringify({...userInfo}))
    }, [])
 
    const logout = useCallback(() => {
-      setUserAuth({
-         token: '',
-         userId: '',
-         userName: '',
-         userEmail: '',
-         userIcon: '',
-         userRole: ''
-      })
-
+      setUserAuth({...initialData})
       localStorage.removeItem(storageName)
    }, [])
-
-   useEffect(() => {
-      const data = JSON.parse(localStorage.getItem(storageName) as string)
-      
-      if(data && data.token) {
-         login({
-            jwtToken: data.token,
-            id: data.userId,
-            name: data.userName,
-            email: data.userEmail,
-            icon: data.userIcon,
-            role: data.userRole,
-         })
-      }
-   }, [login])
 
    return {login, logout, userAuth}
 }

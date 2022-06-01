@@ -9,22 +9,8 @@ export const Router = () => {
 
   return (
     <>
-      {!userAuth.token
+      {userAuth.token
       ?
-      <Routes>   
-        {publicRoutes.map(route =>
-          <Route
-            path={route.path}
-            element={<route.element />} 
-            key={route.path}
-          />
-        )}  
-        <Route 
-          path='*'
-          element={<Navigate to={RouteNames.LOGIN} replace/>} 
-        />
-      </Routes> 
-      :
       <Routes>   
         {privateRoutes.map(route =>
           <Route
@@ -36,6 +22,20 @@ export const Router = () => {
         <Route 
           path='*'
           element={<Navigate to={RouteNames.MAIN} replace/>} 
+        />
+      </Routes> 
+      :
+      <Routes>   
+        {publicRoutes.map(route =>
+          <Route
+            path={route.path}
+            element={<route.element />} 
+            key={route.path}
+          />
+        )}  
+        <Route 
+          path='*'
+          element={<Navigate to={RouteNames.LOGIN} replace/>} 
         />
       </Routes> 
       }
