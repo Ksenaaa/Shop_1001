@@ -8,7 +8,7 @@ import { LoadingCircular } from '../../../component/loading/LoadingCircular';
 
 import '../../../App.css';
 
-type ModalLoginType = {
+type Props = {
     onClick: () => void
 }
 
@@ -17,17 +17,19 @@ type LoginUser = {
     password: string, 
 }
 
-export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
-    const [form, setForm] = useState<LoginUser>({email: '', password: ''})
-    const {login} = useContext(AuthContext)
-    const {loading, request, errorsValid} = useHttp()
+export const ModalLogin: FC<Props> = ({ onClick }) => {
+    const [form, setForm] = useState<LoginUser>({ email: '', password: '' })
+
+    const { login } = useContext(AuthContext)
+    
+    const { loading, request, errorsValid } = useHttp()
 
     const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
-        setForm({...form, [event.target.name]: event.target.value})
+        setForm({ ...form, [event.target.name]: event.target.value })
     }, [form]) 
 
     const loginHandler = useCallback(async() => {
-        const data = await request({url: 'api/auth/login', method: 'POST', body: {...form}})
+        const data = await request({url: 'api/auth/login', method: 'POST', body: { ...form }})
         login({
             jwtToken: data.token,
             id: data.id,

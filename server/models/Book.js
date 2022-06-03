@@ -1,4 +1,4 @@
-const {Schema, model, default: mongoose} = require('mongoose')
+const { Schema, model, default: mongoose } = require('mongoose')
 
 const schema = new Schema({
     bookName: {type: String, required: true},

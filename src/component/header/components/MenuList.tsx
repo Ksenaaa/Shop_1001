@@ -11,8 +11,9 @@ import { NestedListItem } from '../../nestedList/NestedListItem';
 import { RouteNames } from '../../../interface/IRoute';
 
 export const MenuList = () => {
-  const classes = useStyles()
   const {userAuth} = useContext(AuthContext)
+  
+  const classes = useStyles()
 
   return (
     <NestedList className={classes.nestedList}>

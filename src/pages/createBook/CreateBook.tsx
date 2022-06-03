@@ -12,32 +12,24 @@ import { AuthContext } from '../../context/AuthContext';
 import { InputUploadImg } from './components/InputUploadImg';
 import { LoadingCircular } from '../../component/loading/LoadingCircular';
 import { selectOptionCategory, selectOptionYear } from './constants'
+import { IBook } from '../../interface/IBook';
 
 import './style.css'
 
-type FormBookType = {
-    bookName: string, 
-    author: string,
-    category: string,
-    page: string,
-    year: string,
-    language: string,
-    price: string,
-    img: File | null,
-    sellerId: string,
-}
-
 export const CreateBook = () => {
-    const [form, setForm] = useState<Record<string, keyof FormBookType>>({})
+    const [form, setForm] = useState<Record<string, keyof IBook>>({})
+
     const {userAuth} = useContext(AuthContext)
+
     const {loading, request, errorsValid, clearError} = useHttp()
+    
     const closeCreatePage = useNavigate()
 
     const changeHandler = useCallback(({ target }: ChangeEvent<HTMLInputElement>): void => {
         const value = (target.type === 'file') ? target?.files?.[0] : 
             (target.name === 'price') ? target.value.replace(/[^0-9.]/g, '').replace(/^(\d[^.]*\.)|\./g, '$1') :
                 target.value
-        setForm({ ...form, [target.name]: value} as Record<string, keyof FormBookType>)
+        setForm({ ...form, [target.name]: value} as Record<string, keyof IBook>)
     }, [form]) 
 
     const createBookHandler = useCallback(async() => {

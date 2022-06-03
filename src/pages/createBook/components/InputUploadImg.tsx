@@ -5,7 +5,7 @@ import { handleErrors, ErrorType } from "../../../utils/ErrorsHanding"
 
 import '../style.css'
 
-type InputFileType = {
+type Props = {
     onChange(e: ChangeEvent<HTMLInputElement>): void, 
     errors: ErrorType[] | null,
     type: string,
@@ -13,7 +13,7 @@ type InputFileType = {
     value?: File | null
 }
 
-export const InputUploadImg: FC<InputFileType> = ({onChange, errors, type, name, value}) => {
+export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value }) => {
     const [imageUrl, setImageUrl] = useState<string>('')
     const [img, setImg] = useState<Blob | MediaSource | null>(null)
 

@@ -7,8 +7,8 @@ import { RadioButtonRegistration } from '../../../component/radioButton/RadioBut
 import { useHttp } from '../../../hooks/http.hook'
 import { TextFields } from '../../../component/input/Input'
 
-type ModalWindow = {
-    onClose: () => void
+type Props = {
+    onClose: () => void,
 }
 
 type RegisterUser = {
@@ -19,9 +19,10 @@ type RegisterUser = {
     role: string,
 }
 
-export const ModalRegistration: FC<ModalWindow> = ({onClose}) => {
-    const [form, setForm] = useState<RegisterUser>({email: '', name: '', password: '', checkPassword: '', role: 'buyer'})
-    const {loading, request, errorsValid} = useHttp()
+export const ModalRegistration: FC<Props> = ({ onClose }) => {
+    const [form, setForm] = useState<RegisterUser>({ email: '', name: '', password: '', checkPassword: '', role: 'buyer' })
+    
+    const { loading, request, errorsValid } = useHttp()
     
     const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
         setForm({...form, [event.target.name]: event.target.value})

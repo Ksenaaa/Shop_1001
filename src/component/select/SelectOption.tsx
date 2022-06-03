@@ -1,6 +1,10 @@
 import React, { FC, ReactElement, SelectHTMLAttributes } from 'react';
 
-export const SelectOption: FC<SelectHTMLAttributes<ReactElement>> = ({value}) => {
+type Props = {
+  value?: string | number,
+}
+
+export const SelectOption: FC<Props> = ({value}) => {
 
   return (
     <option 

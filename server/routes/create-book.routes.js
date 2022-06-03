@@ -1,9 +1,9 @@
-const {Router} = require('express') 
+const { Router } = require('express') 
 const config = require('config') 
 const uuid = require('uuid') 
 const path = require('path') 
 const jwt = require('jsonwebtoken') 
-const {check, validationResult, files} = require('express-validator') 
+const { check, validationResult } = require('express-validator') 
 const Book = require('../models/Book')
 const router = Router() 
 
@@ -11,7 +11,7 @@ router.post(
     '/create-book',
     [
         check('bookName')
-            .isLength({min:1, max:50}).withMessage('Enter book name!'),
+            .isLength({min:1, max:200}).withMessage('Enter book name!'),
         check('author')
             .isLength({min:1, max:50}).withMessage('Enter author!'),
         check('category')

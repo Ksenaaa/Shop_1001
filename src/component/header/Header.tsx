@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, ChangeEvent, useCallback } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,9 +19,12 @@ import { MenuList } from './components/MenuList';
 export const Header = () => {
   const [isMenuUserOpen, setMenuUserOpen] = useState<boolean>(false)
   const [isMenuListOpen, setMenuListOpen] = useState<boolean>(false)
-  const classes = useStyles()
+  
   const {logout, userAuth} = useContext(AuthContext)
+  
   const ref = useRef(null)
+
+  const classes = useStyles()
 
   const onLogout = () => {
     setMenuUserOpen(false)

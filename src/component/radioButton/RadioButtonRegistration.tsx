@@ -4,12 +4,12 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 
-type RadioButtonType = {
+type Props = {
     onChange(e: ChangeEvent<HTMLInputElement>): void,
     name: string, 
 }
 
-export const RadioButtonRegistration: FC<RadioButtonType> = ({onChange, name}) => {
+export const RadioButtonRegistration: FC<Props> = ({onChange, name}) => {
 
     return (
         <div >

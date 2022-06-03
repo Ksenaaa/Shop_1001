@@ -3,12 +3,12 @@ import MuiAlert from '@material-ui/lab/Alert';
 
 import { useStyles } from './style';
 
-type SnackType = {
+type Props = {
   alertMessage: string,
   onClose: boolean,
 }
 
-export const SnackbarAccepted: FC<SnackType> = ({alertMessage, onClose}) => {
+export const SnackbarAccepted: FC<Props> = ({alertMessage, onClose}) => {
   const classes = useStyles();
 
   return (
