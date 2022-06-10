@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
 import { IBook, IBookResponce } from '../interface/IBook'
+import { normalizeBook } from '../utils/normalizeBooks'
 
 const storageName = 'bookData'
 
@@ -22,22 +23,11 @@ export const useBook = () => {
 
    const [book, setBook] = useState<IBook>({...bookData})
 
-   const bookLocalStor = useCallback(({_id, bookName, author, category, page, year, language, price, img, sellerId}: IBookResponce) => {
-      const bookInfo = {
-         idBook: _id,
-         bookName, 
-         author,
-         category,
-         page,
-         year,
-         language,
-         price,
-         img,
-         sellerId,
-      }
-
-      setBook({...bookInfo})
-      localStorage.setItem(storageName, JSON.stringify({...bookInfo}))
+   const bookToLocalStorage = useCallback((book: IBookResponce) => {
+      const normalizedBook = normalizeBook(book)
+      
+      setBook(normalizedBook)
+      localStorage.setItem(storageName, JSON.stringify(normalizedBook))
    }, [])
 
    const bookLocalStorRemove = useCallback(() => {
@@ -45,5 +35,5 @@ export const useBook = () => {
       localStorage.removeItem(storageName)
    }, [])
 
-   return {book, bookLocalStor, bookLocalStorRemove}
+   return {book, bookToLocalStorage, bookLocalStorRemove}
 }

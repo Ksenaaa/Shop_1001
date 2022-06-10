@@ -5,6 +5,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 
 import { IBook } from '../../interface/IBook'
+import { RouteNames } from '../../interface/IRoute'
 
 import './style.css'
 
@@ -19,15 +20,15 @@ export const BookItem: FC<Props> = ({book}) => {
 
     const handlerFavoriteBook = useCallback(() => {
         setFavoriteBook(favoriteBook === true ? false : true)
-    }, [])
-    
+    }, [favoriteBook])
+
     return(
-        <div className="wrapperItem">
+        <div className="wrapperBookItem">
             <div className="bookImg">
-                <img src={`http://localhost:3002/${book.img}`} />
+                <img src={`${process.env.REACT_APP_API_URL}${book.img}`} alt="book" />
             </div>
             <div className="bookText">
-                <div className="bookName" onClick={() => navigate(`'/book' + '/' + ${book.idBook}`)}>
+                <div className="bookName" onClick={() => navigate(`${RouteNames.BOOK_PAGE}/${book.idBook}`)}>
                     {book.bookName}
                 </div>
                 <div className="bookAuthor">{book.author}</div>

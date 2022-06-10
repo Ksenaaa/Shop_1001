@@ -24,15 +24,15 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
     
     const { loading, request, errorsValid } = useHttp()
     
-    const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
-        setForm({...form, [event.target.name]: event.target.value})
+    const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
+        setForm({ ...form, [event.target.name]: event.target.value })
     }, [form]) 
 
     const registrationHandler = useCallback(async() => {
-        const data = await request({url: 'api/auth/register', method: 'POST', body: {...form}})
+        const data = await request({ url: 'auth/register', method: 'POST', body: {...form} })
         if(!data) return ''
         onClose()
-    }, [onClose, form]) 
+    }, [onClose, form, request]) 
 
     const classes = cn("wrapperLogin", "wrapperRegister", errorsValid && "wrapperErrorRegister")
 
@@ -48,33 +48,33 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
                 label="Email" 
                 type="text" 
                 name="email" 
-                onChange={changeHandler}
+                onChange={handlerChange}
                 errors={errorsValid}
             />
             <TextFields
                 label="Login" 
                 type="text" 
                 name="name" 
-                onChange={changeHandler}
+                onChange={handlerChange}
                 errors={errorsValid}
             />
             <TextFields
                 label="Password" 
                 type="password" 
                 name="password" 
-                onChange={changeHandler}
+                onChange={handlerChange}
                 errors={errorsValid}
             />
             <TextFields
                 label="Repeat password" 
                 type="password" 
                 name="checkPassword" 
-                onChange={changeHandler}
+                onChange={handlerChange}
                 errors={errorsValid}
             />
             <RadioButtonRegistration
                 name="role"
-                onChange={changeHandler}
+                onChange={handlerChange}
             />
             <div className="buttonLoginWrapper">
                 <Button variant="outlined" color="secondary"  
@@ -85,7 +85,7 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
                 </Button>
             </div>
             <div className="wrapperCloseWindow" onClick={onClose}>
-                <img src="https://cdn-icons-png.flaticon.com/512/51/51517.png"  alt=''/>
+                <img src="https://cdn-icons-png.flaticon.com/512/51/51517.png"  alt="close window" />
             </div>
         </form>
     )

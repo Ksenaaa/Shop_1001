@@ -24,7 +24,7 @@ export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value 
         setImageUrl(URL.createObjectURL(img))
     }, [value])
 
-    const onChangeHandler = useCallback((e: ChangeEvent) => {
+    const onHandlerChange = useCallback((e: ChangeEvent) => {
         const target = e.target as HTMLInputElement
         const file: File = (target.files as FileList)[0]
 
@@ -35,26 +35,26 @@ export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value 
 
     return (
         <>
-        <div 
-            className="wrapperInputImg" 
-            onChange={onChange}
-        >
-            <input
-                type={type}
-                name={name} 
-                onChange={onChangeHandler}
-                className="inputImg"
-            />
-            {imageUrl &&
-                <img src={imageUrl} />
-            }
-            <div className="inputImgIcon">
-                <AddCircleOutlineIcon />
+            <div 
+                className="wrapperInputImg" 
+                onChange={onChange}
+            >
+                <input
+                    type={type}
+                    name={name} 
+                    onChange={onHandlerChange}
+                    className="inputImg"
+                />
+                {imageUrl &&
+                    <img src={imageUrl} alt="book"/>
+                }
+                <div className="inputImgIcon">
+                    <AddCircleOutlineIcon />
+                </div>
             </div>
-        </div>
-        <div className="InputImgError">
-            {error}
-        </div>
+            <div className="InputImgError">
+                {error}
+            </div>
         </>
     )
 }

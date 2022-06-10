@@ -14,3 +14,6 @@ export interface IBook {
 export interface IBookResponce extends Omit<IBook, 'idBook'> {
     _id: string,
 }
+
+export interface IFormBook extends Omit<IBook, 'idBook'> {
+}

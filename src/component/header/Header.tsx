@@ -37,49 +37,49 @@ export const Header = () => {
         <Toolbar>
           {userAuth.token &&
             <>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              onClick={() => setMenuListOpen(true)}
-            >
-              <MenuIcon />
-            </IconButton>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                onClick={() => setMenuListOpen(true)}
+              >
+                <MenuIcon />
+              </IconButton>
 
-            {isMenuListOpen &&
-              <div onClick={() => setMenuListOpen(false)} className={classes.closeMenu}>
-                <MenuList/>
-              </div>
-            }
+              {isMenuListOpen &&
+                <div onClick={() => setMenuListOpen(false)} className={classes.closeMenu}>
+                  <MenuList/>
+                </div>
+              }
 
-            <Typography className={classes.title} variant="h6" noWrap>
-              Page
-            </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+              <Typography className={classes.title} variant="h6" noWrap>
+                Page
+              </Typography>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
               </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton color="inherit">
-                  <MailIcon />
-              </IconButton>
-              <IconButton color="inherit">
-                  <ShoppingBasketIcon />
-              </IconButton>
-              <IconButton color="inherit" onClick={() => setMenuUserOpen(true)}>
-                <AccountCircle />
-              </IconButton>
-            </div>
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <IconButton color="inherit">
+                    <MailIcon />
+                </IconButton>
+                <IconButton color="inherit">
+                    <ShoppingBasketIcon />
+                </IconButton>
+                <IconButton color="inherit" onClick={() => setMenuUserOpen(true)}>
+                  <AccountCircle />
+                </IconButton>
+              </div>
             </>
           }
         </Toolbar>

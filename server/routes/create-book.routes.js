@@ -1,11 +1,9 @@
 const { Router } = require('express') 
-const config = require('config') 
 const uuid = require('uuid') 
 const path = require('path') 
-const jwt = require('jsonwebtoken') 
-const { check, validationResult } = require('express-validator') 
+const { check, validationResult } = require('express-validator')
 const Book = require('../models/Book')
-const router = Router() 
+const router = Router()
 
 router.post(
     '/create-book',
@@ -34,14 +32,13 @@ router.post(
     async (req, res) => {
         try {
             const errors = validationResult(req)
-            const {bookName, author, category, page, year, language, price, sellerId} = req.body 
-            const img = req?.files?.img
+            const {bookName, author, category, page, year, language, price, sellerId} = req.body
+            const file = req?.files?.img
             let imgError
 
-            if(img) {
-                const fileExtension = img.mimetype.split('/').pop()
+            if(file) {
+                const fileExtension = file.mimetype.split('/').pop()
                 const exceptedFileType = ['png', 'jpeg', 'jpg', 'webp']
-
                 if(!exceptedFileType.includes(fileExtension)) {
                     imgError =  {value: '', param: "img", msg: "Type file is not valid. Only png, jpeg, jpg, webp!"}
                     errors.errors.push(imgError)
@@ -50,20 +47,18 @@ router.post(
                 imgError = {value: '', param: "img", msg: "Upload a picture of the book!"}
                 errors.errors.push(imgError)
             } 
-
             if(!errors.isEmpty() || imgError) {
                 return res.status(400).json({errors: errors.array()})
             }
 
             const fileName = uuid.v4() + ".jpg"
-            img.mv(path.resolve(__dirname, '..', 'static', fileName))
-
-            const book = new Book({bookName, author, category, page, year, language, price, img: fileName, sellerId})
+            file.mv(path.resolve(__dirname, '..', 'static', fileName))
+            const book = new Book({ bookName, author, category, page, year, language, price, img: fileName, sellerId })
             await book.save()
 
             res.status(200).json({message: "Book are created", status: 200})  
         } catch (e) {
-            res.status(500).json({message: "its Error, try again!"})  
+            res.status(500).json({message: "It's Error, try again!"})  
         }
     }
 )

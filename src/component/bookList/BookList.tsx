@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, UIEvent } from 'react'
 
 import { IBook } from '../../interface/IBook'
 import { BookItem } from './BookItem'
@@ -6,13 +6,14 @@ import { BookItem } from './BookItem'
 import './style.css'
 
 type Props = {
-    books: IBook[]
+    books: IBook[],
+    onScroll?: (e: UIEvent<HTMLDivElement>) => void,
 }
 
-export const BookList: FC<Props> = ({books}) => {
+export const BookList: FC<Props> = ({books, onScroll}) => {
 
     return(
-        <div className="wrapperList">
+        <div className="wrapperBookList" onScroll={onScroll}>
             {books.map(book => 
                 <BookItem 
                     key={book.idBook} 

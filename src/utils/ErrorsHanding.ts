@@ -1,5 +1,3 @@
-import React from 'react'
-
 type ErrorsType = {
     errors: ErrorType[] | null,
     name: string,
