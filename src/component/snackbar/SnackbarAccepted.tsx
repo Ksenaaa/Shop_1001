@@ -8,8 +8,8 @@ type Props = {
   onClose: boolean,
 }
 
-export const SnackbarAccepted: FC<Props> = ({alertMessage, onClose}) => {
-  const classes = useStyles();
+export const SnackbarAccepted: FC<Props> = ({ alertMessage, onClose }) => {
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>

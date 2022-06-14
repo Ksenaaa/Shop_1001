@@ -5,4 +5,4 @@ export interface IUser {
     userEmail: string,
     userIcon: string,
     userRole: string,
- }
+}

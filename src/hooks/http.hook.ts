@@ -6,7 +6,7 @@ type RequestType = {
     url: string,
     method?: string, 
     body?: any, 
-    headers?: {[x: string]: string},
+    headers?: { [x: string]: string },
     notJsonContent?: boolean
 }
 
@@ -63,5 +63,5 @@ export const useHttp = () => {
         setErrorsValid(null)
     }, [])
     
-    return {loading, setLoading, request, error, clearError, errorsValid}
+    return { loading, setLoading, request, error, clearError, errorsValid }
 }

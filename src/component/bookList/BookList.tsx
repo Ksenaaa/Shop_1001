@@ -10,16 +10,13 @@ type Props = {
     onScroll?: (e: UIEvent<HTMLDivElement>) => void,
 }
 
-export const BookList: FC<Props> = ({books, onScroll}) => {
-
-    return(
-        <div className="wrapperBookList" onScroll={onScroll}>
-            {books.map(book => 
-                <BookItem 
-                    key={book.idBook} 
-                    book={book}
-                />
-            )}
-        </div>
-    )
-}
+export const BookList: FC<Props> = ({ books, onScroll }) => (
+    <div className="wrapperBookList" onScroll={onScroll}>
+        {books.map(book => 
+            <BookItem 
+                key={book.idBook} 
+                book={book}
+            />
+        )}
+    </div>
+)

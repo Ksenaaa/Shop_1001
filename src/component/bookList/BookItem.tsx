@@ -13,7 +13,7 @@ type Props = {
     book: IBook
 }
 
-export const BookItem: FC<Props> = ({book}) => {
+export const BookItem: FC<Props> = ({ book }) => {
     const [favoriteBook, setFavoriteBook] = useState(false)
     
     const navigate = useNavigate()

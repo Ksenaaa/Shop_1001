@@ -7,17 +7,15 @@ import { Router } from './component/router/Router';
 
 import './App.css';
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Header />
-          <Router />
-        </BrowserRouter>
-      </div>
-    </AuthProvider>
-  )
-}
+const App = () => (
+  <AuthProvider>
+    <div className="App">
+      <BrowserRouter>
+        <Header />
+        <Router />
+      </BrowserRouter>
+    </div>
+  </AuthProvider>
+)
 
 export default App;

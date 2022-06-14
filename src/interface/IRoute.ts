@@ -9,6 +9,7 @@ import { BookPage } from "../pages/bookPage/BookPage";
 export interface IRoute {
     path: string;
     element: React.ComponentType;
+    exact: boolean;
 }
 
 export enum RouteNames {
@@ -20,12 +21,12 @@ export enum RouteNames {
 }
 
 export const publicRoutes: IRoute[] = [
-    {path: RouteNames.LOGIN, element: Auth}
+    { path: RouteNames.LOGIN, exact: true, element: Auth }
 ]
 
 export const privateRoutes: IRoute[] = [
-    {path: RouteNames.MAIN, element: Main},
-    {path: RouteNames.CREATE_BOOK, element: CreateBook},
-    {path: RouteNames.BOOKS_SELLER, element: BooksSeller},
-    {path: `${RouteNames.BOOK_PAGE}/:idBook`, element: BookPage},
+    { path: RouteNames.MAIN, exact: true, element: Main },
+    { path: RouteNames.CREATE_BOOK, exact: true, element: CreateBook },
+    { path: RouteNames.BOOKS_SELLER, exact: true, element: BooksSeller },
+    { path: `${RouteNames.BOOK_PAGE}/:idBook`, exact: true, element: BookPage },
 ]

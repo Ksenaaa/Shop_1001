@@ -25,11 +25,11 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
     const { loading, request, errorsValid } = useHttp()
     
     const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
-        setForm({ ...form, [event.target.name]: event.target.value })
-    }, [form]) 
+        setForm(prevForm => ({ ...prevForm, [event.target.name]: event.target.value }))
+    }, []) 
 
     const registrationHandler = useCallback(async() => {
-        const data = await request({ url: 'auth/register', method: 'POST', body: {...form} })
+        const data = await request({ url: 'auth/register', method: 'POST', body: { ...form } })
         if(!data) return ''
         onClose()
     }, [onClose, form, request]) 

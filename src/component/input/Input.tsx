@@ -13,10 +13,10 @@ type InputType = {
   value?: string,
 }
 
-export const TextFields: FC<InputType> = ({label, type, errors, onChange, name, value}) => {
+export const TextFields: FC<InputType> = ({ label, type, errors, onChange, name, value }) => {
   const classes = useStyles();
 
-  const error = useMemo(() => handleErrors({name, errors}), [name, errors]) 
+  const error = useMemo(() => handleErrors({ name, errors }), [name, errors]) 
   
   return (
     <div className={classes.root} >

@@ -25,11 +25,11 @@ export const ModalLogin: FC<Props> = ({ onClick }) => {
     const { loading, request, errorsValid } = useHttp()
 
     const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
-        setForm({ ...form, [event.target.name]: event.target.value })
-    }, [form]) 
+        setForm(prevForm => ({ ...prevForm, [event.target.name]: event.target.value }))
+    }, []) 
 
     const loginHandler = useCallback(async() => {
-        const data = await request({url: 'auth/login', method: 'POST', body: { ...form }})
+        const data = await request({ url: 'auth/login', method: 'POST', body: { ...form } })
         login({
             jwtToken: data.token,
             id: data.id,

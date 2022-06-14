@@ -9,19 +9,16 @@ type Props = {
     name: string, 
 }
 
-export const RadioButtonRegistration: FC<Props> = ({onChange, name}) => {
-
-    return (
-        <div >
-            <FormControl component="fieldset">
-                <RadioGroup name={name} onChange={onChange} defaultValue='buyer'>
-                    <div className="wrapperRadio">
-                        <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-                        <FormControlLabel value="seller" control={<Radio />} label="Seller" />
-                        <FormControlLabel value="buyer" control={<Radio />} label="Buyer" />
-                    </div>
-                </RadioGroup>
-            </FormControl>
-        </div>
-    )
-}
+export const RadioButtonRegistration: FC<Props> = ({ onChange, name }) => (
+    <div >
+        <FormControl component="fieldset">
+            <RadioGroup name={name} onChange={onChange} defaultValue='buyer'>
+                <div className="wrapperRadio">
+                    <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+                    <FormControlLabel value="seller" control={<Radio />} label="Seller" />
+                    <FormControlLabel value="buyer" control={<Radio />} label="Buyer" />
+                </div>
+            </RadioGroup>
+        </FormControl>
+    </div>
+)

@@ -20,7 +20,7 @@ export const Header = () => {
   const [isMenuUserOpen, setMenuUserOpen] = useState<boolean>(false)
   const [isMenuListOpen, setMenuListOpen] = useState<boolean>(false)
   
-  const {logout, userAuth} = useContext(AuthContext)
+  const { logout, userAuth } = useContext(AuthContext)
   
   const ref = useRef(null)
 

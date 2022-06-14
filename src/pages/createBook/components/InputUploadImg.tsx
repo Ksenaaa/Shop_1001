@@ -31,7 +31,7 @@ export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value 
         setImg(file)
     }, [img])
 
-    const error = useMemo(() => handleErrors({name, errors}), [name, errors]) 
+    const error = useMemo(() => handleErrors({ name, errors }), [name, errors]) 
 
     return (
         <>

@@ -14,16 +14,16 @@ export const BooksSeller = () => {
     const [currentPage,  setCurrentPage] = useState(1)
     const [totalCount,  setTotalCount] = useState(0)
 
-    const {userAuth} = useContext(AuthContext)
+    const { userAuth } = useContext(AuthContext)
 
-    const {loading, request} = useHttp()
+    const { loading, request } = useHttp()
 
     useEffect(() => {
         showBooks()
     }, [])
 
     const showBooks = useCallback(async(limit = DEFAULT_PAGE_LIMIT) => {
-        const result = await request({url: formatQueryString(`books/show-books/${userAuth.userId}`, {limit, page: currentPage})})
+        const result = await request({ url: formatQueryString(`books/show-books/${userAuth.userId}`, { limit, page: currentPage }) })
 
         setTotalCount(result.totalCount)
         setBooks([...books, ...normalizeBooks(result.data)])
@@ -33,7 +33,7 @@ export const BooksSeller = () => {
     const handleScroll = useCallback( ({target}: UIEvent<HTMLDivElement>) => {
         if (totalCount <= books.length || loading) return
 
-        const {scrollTop, scrollHeight} = target as HTMLDivElement
+        const { scrollTop, scrollHeight } = target as HTMLDivElement
         const fetchingHeight = scrollHeight - (scrollTop + window.innerHeight)
 
         if(fetchingHeight < 100) {

@@ -12,12 +12,12 @@ import './style.css'
 export const BookPage = () => {
     const [book, setBook] = useState<IBook>()
 
-    const {loading, request} = useHttp()
+    const { loading, request } = useHttp()
 
-    const {idBook} = useParams()
+    const { idBook } = useParams()
 
     const showBook = useCallback(async () => {
-        const result = await request({url: `books/${idBook}`})
+        const result = await request({ url: `books/${idBook}` })
         setBook(normalizeBook(result)) 
     }, [idBook, request])
 

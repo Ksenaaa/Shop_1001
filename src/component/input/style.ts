@@ -5,6 +5,6 @@ export const useStyles = makeStyles((theme) => ({
     '& > *': {
       margin: '4px 0 4px 8px',
       width: '35.6ch',
-    },
-  },
-}));
+    }
+  }
+}))

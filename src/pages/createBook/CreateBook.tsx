@@ -12,14 +12,14 @@ import { AuthContext } from '../../context/AuthContext';
 import { InputUploadImg } from './components/InputUploadImg';
 import { LoadingCircular } from '../../component/loading/LoadingCircular';
 import { parceStringToNumberAndPoint } from '../../utils/parceStringToNumberAndPoint'
-import { IFormBook } from '../../interface/IBook';
+import { IBook } from '../../interface/IBook';
 
 import { selectOptionCategory, selectOptionYear } from './constants'
 
 import './style.css'
 
 export const CreateBook = () => {
-    const [form, setForm] = useState<Record<string, keyof IFormBook>>({})
+    const [form, setForm] = useState<Record<string, keyof Omit<IBook, 'idBook'>>>({})
 
     const { userAuth } = useContext(AuthContext)
 
@@ -36,12 +36,12 @@ export const CreateBook = () => {
             newValue = target?.files?.[0] as File
         }
 
-        setForm({ ...form, [target.name]: newValue } as Record<string, keyof IFormBook>)
+        setForm({ ...form, [target.name]: newValue } as Record<string, keyof Omit<IBook, 'idBook'>>)
     }, [form]) 
     
     const createBookHandler = useCallback(async() => {
         const formData = new FormData()
-        const newForm = { ...form, sellerId: userAuth.userId } as Record<string, keyof IFormBook>
+        const newForm = { ...form, sellerId: userAuth.userId } as Record<string, keyof Omit<IBook, 'idBook'>>
 
         Object.keys(newForm).forEach((formKey) => { formData.append(formKey, newForm[formKey]) })
 

@@ -5,7 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { privateRoutes, publicRoutes, RouteNames } from '../../interface/IRoute';
 
 export const Router = () => {
-  const {userAuth} = useContext(AuthContext)
+  const { userAuth } = useContext(AuthContext)
 
   return (
     <>

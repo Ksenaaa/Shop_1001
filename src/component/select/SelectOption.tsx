@@ -4,7 +4,7 @@ type Props = {
   value?: string | number,
 }
 
-export const SelectOption: FC<Props> = ({value}) => (
+export const SelectOption: FC<Props> = ({ value }) => (
   <option 
     value={value}
   >
