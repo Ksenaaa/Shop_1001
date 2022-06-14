@@ -11,47 +11,44 @@ import { SelectOption } from '../../component/select/SelectOption';
 import { AuthContext } from '../../context/AuthContext';
 import { InputUploadImg } from './components/InputUploadImg';
 import { LoadingCircular } from '../../component/loading/LoadingCircular';
+import { parceStringToNumberAndPoint } from '../../utils/parceStringToNumberAndPoint'
+import { IBook } from '../../interface/IBook';
+
 import { selectOptionCategory, selectOptionYear } from './constants'
 
 import './style.css'
 
-type FormBookType = {
-    bookName: string, 
-    author: string,
-    category: string,
-    page: string,
-    year: string,
-    language: string,
-    price: string,
-    img: File | null,
-    sellerId: string,
-}
-
 export const CreateBook = () => {
-    const [form, setForm] = useState<Record<string, keyof FormBookType>>({})
-    const {userAuth} = useContext(AuthContext)
-    const {loading, request, errorsValid, clearError} = useHttp()
+    const [form, setForm] = useState<Record<string, keyof Omit<IBook, 'idBook'>>>({})
+
+    const { userAuth } = useContext(AuthContext)
+
+    const { loading, request, errorsValid } = useHttp()
+    
     const closeCreatePage = useNavigate()
 
-    const changeHandler = useCallback(({ target }: ChangeEvent<HTMLInputElement>): void => {
-        const value = (target.type === 'file') ? target?.files?.[0] : 
-            (target.name === 'price') ? target.value.replace(/[^0-9.]/g, '').replace(/^(\d[^.]*\.)|\./g, '$1') :
-                target.value
-        setForm({ ...form, [target.name]: value} as Record<string, keyof FormBookType>)
-    }, [form]) 
+    const handlerChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>): void => {
+        let newValue: File | string = target?.value
 
+        if (target.name === 'price') {
+            newValue = parceStringToNumberAndPoint(newValue)
+        } else if (target.type === 'file') {
+            newValue = target?.files?.[0] as File
+        }
+
+        setForm({ ...form, [target.name]: newValue } as Record<string, keyof Omit<IBook, 'idBook'>>)
+    }, [form]) 
+    
     const createBookHandler = useCallback(async() => {
         const formData = new FormData()
+        const newForm = { ...form, sellerId: userAuth.userId } as Record<string, keyof Omit<IBook, 'idBook'>>
 
-        Object.keys(form).forEach((formKey) => {formData.append(formKey, form[formKey])})
+        Object.keys(newForm).forEach((formKey) => { formData.append(formKey, newForm[formKey]) })
 
-        formData.append('sellerId', userAuth.userId)
+        const data = await request({ url: 'create/create-book', method: 'POST', body: formData, notJsonContent: true })
 
-        const data = await request({ url: 'api/create/create-book', method: 'POST', body: formData, notJsonContent: true})
-        
         if(data.status === 200) {
             setForm({})
-            clearError()
         }
     }, [form])
     
@@ -69,7 +66,7 @@ export const CreateBook = () => {
                         type="text" 
                         name="bookName" 
                         value={form?.bookName || ''}
-                        onChange={changeHandler}
+                        onChange={handlerChange}
                         errors={errorsValid}
                     />
                     <TextFields
@@ -77,18 +74,18 @@ export const CreateBook = () => {
                         type="text" 
                         name="author" 
                         value={form?.author || ''}
-                        onChange={changeHandler}
+                        onChange={handlerChange}
                         errors={errorsValid}
                     />
                     <SelectComponent
                         label="Category" 
                         name="category" 
                         value={form?.category || ''}
-                        onChange={changeHandler}
+                        onChange={handlerChange}
                         errors={errorsValid}
                     >
                         <>
-                        {selectOptionCategory.map(option => <SelectOption value={option} key={option} />)}
+                            {selectOptionCategory.map(option => <SelectOption value={option} key={option} />)}
                         </>
                     </SelectComponent>
                     <TextFields
@@ -96,18 +93,18 @@ export const CreateBook = () => {
                         type="text" 
                         name="page" 
                         value={form?.page || ''}
-                        onChange={changeHandler}
+                        onChange={handlerChange}
                         errors={errorsValid}
                     />
                     <SelectComponent
                         label="Year" 
                         name="year" 
                         value={form?.year || ''}
-                        onChange={changeHandler}
+                        onChange={handlerChange}
                         errors={errorsValid}
                     >
                         <>
-                        {selectOptionYear().map(option => <SelectOption value={option} key={option} />)}
+                            {selectOptionYear().map(option => <SelectOption value={option} key={option} />)}
                         </>
                     </SelectComponent>
                     <TextFields
@@ -115,7 +112,7 @@ export const CreateBook = () => {
                         type="text" 
                         name="language" 
                         value={form?.language || ''}
-                        onChange={changeHandler}
+                        onChange={handlerChange}
                         errors={errorsValid}
                     />
                     <TextFields
@@ -123,7 +120,7 @@ export const CreateBook = () => {
                         type="text" 
                         name="price" 
                         value={form?.price || ''}
-                        onChange={changeHandler}
+                        onChange={handlerChange}
                         errors={errorsValid}
                     />
                 </div>
@@ -132,7 +129,7 @@ export const CreateBook = () => {
                         type="file" 
                         name="img" 
                         value={(form?.img as unknown as File) || ''}
-                        onChange={changeHandler} 
+                        onChange={handlerChange} 
                         errors={errorsValid}
                     />
                 </div>

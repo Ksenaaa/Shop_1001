@@ -1,5 +1,3 @@
-import React from 'react'
-
 type ErrorsType = {
     errors: ErrorType[] | null,
     name: string,
@@ -10,7 +8,7 @@ export type ErrorType = {
     errorField: string,
 }
 
-export const handleErrors = ({name, errors}: ErrorsType) => {
+export const handleErrors = ({ name, errors }: ErrorsType) => {
     if(!errors?.length) return ''
 
     return errors

@@ -10,7 +10,7 @@ type Props = {
   itemText: string
 }
 
-export const NestedListItem: FC<Props> = ({ children, itemText}) => {
+export const NestedListItem: FC<Props> = ({ children, itemText }) => {
   const classes = useStyles()
   
   return (

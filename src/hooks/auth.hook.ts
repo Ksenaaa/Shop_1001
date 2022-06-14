@@ -17,9 +17,9 @@ const initialData = {
 export const useAuth = () => {
    const userData = JSON.parse(localStorage.getItem(storageName) as string) || initialData
 
-   const [userAuth, setUserAuth] = useState<IUser>({...userData})
+   const [userAuth, setUserAuth] = useState<IUser>({ ...userData })
 
-   const login = useCallback(({jwtToken, id, name, email, icon, role}: IUserAuth) => {
+   const login = useCallback(({ jwtToken, id, name, email, icon, role }: IUserAuth) => {
       const userInfo = {
          token: jwtToken,
          userId: id,
@@ -29,14 +29,14 @@ export const useAuth = () => {
          userRole: role
       }
 
-      setUserAuth({...userInfo})
-      localStorage.setItem(storageName, JSON.stringify({...userInfo}))
+      setUserAuth({ ...userInfo })
+      localStorage.setItem(storageName, JSON.stringify({ ...userInfo }))
    }, [])
 
    const logout = useCallback(() => {
-      setUserAuth({...initialData})
+      setUserAuth({ ...initialData })
       localStorage.removeItem(storageName)
    }, [])
 
-   return {login, logout, userAuth}
+   return { login, logout, userAuth }
 }

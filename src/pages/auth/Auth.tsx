@@ -9,15 +9,15 @@ export const Auth = () => {
     const [modalRegistrationVisible, setModalRegistrationVisible] = useState(false)
 
     return (
-    <>
-        {modalRegistrationVisible  
-            ? <ModalRegistration
-                onClose={() => setModalRegistrationVisible(false)}
-            /> 
-            : <ModalLogin 
-                onClick={() => setModalRegistrationVisible(true)}
-            />
-        }
-    </>
+        <>
+            {modalRegistrationVisible  
+                ? <ModalRegistration
+                    onClose={() => setModalRegistrationVisible(false)}
+                /> 
+                : <ModalLogin 
+                    onClick={() => setModalRegistrationVisible(true)}
+                />
+            }
+        </>
     )
 }

@@ -8,10 +8,10 @@ type Props = {
 }
  
 const AuthProvider: FC<Props> = ({ children }) => {
-    const {login, userAuth, logout} = useAuth()
+    const { login, userAuth, logout } = useAuth()
 
     return (
-        <AuthContext.Provider value={{login, userAuth, logout}}>
+        <AuthContext.Provider value={{ login, userAuth, logout }}>
             {children}
         </AuthContext.Provider>
     )

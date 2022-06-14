@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select';
 import { handleErrors, ErrorType } from '../../utils/ErrorsHanding';
 import { useStyles } from './style';
 
-type SelectType = {
+type Props = {
   label: string,
   errors: ErrorType[] | null,
   onChange(e: ChangeEvent<HTMLInputElement>): void,
@@ -16,10 +16,10 @@ type SelectType = {
   value: string,
 }
 
-export const SelectComponent: FC<SelectType> = ({label, name, errors, onChange, children, value}) => {
+export const SelectComponent: FC<Props> = ({ label, name, errors, onChange, children, value }) => {
   const classes = useStyles()
 
-  const error = useMemo(() => handleErrors({name, errors}), [name, errors]) 
+  const error = useMemo(() => handleErrors({ name, errors }), [name, errors]) 
 
   return (
     <FormControl 

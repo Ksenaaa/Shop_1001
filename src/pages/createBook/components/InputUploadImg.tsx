@@ -5,7 +5,7 @@ import { handleErrors, ErrorType } from "../../../utils/ErrorsHanding"
 
 import '../style.css'
 
-type InputFileType = {
+type Props = {
     onChange(e: ChangeEvent<HTMLInputElement>): void, 
     errors: ErrorType[] | null,
     type: string,
@@ -13,7 +13,7 @@ type InputFileType = {
     value?: File | null
 }
 
-export const InputUploadImg: FC<InputFileType> = ({onChange, errors, type, name, value}) => {
+export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value }) => {
     const [imageUrl, setImageUrl] = useState<string>('')
     const [img, setImg] = useState<Blob | MediaSource | null>(null)
 
@@ -24,37 +24,37 @@ export const InputUploadImg: FC<InputFileType> = ({onChange, errors, type, name,
         setImageUrl(URL.createObjectURL(img))
     }, [value])
 
-    const onChangeHandler = useCallback((e: ChangeEvent) => {
+    const onHandlerChange = useCallback((e: ChangeEvent) => {
         const target = e.target as HTMLInputElement
         const file: File = (target.files as FileList)[0]
 
         setImg(file)
     }, [img])
 
-    const error = useMemo(() => handleErrors({name, errors}), [name, errors]) 
+    const error = useMemo(() => handleErrors({ name, errors }), [name, errors]) 
 
     return (
         <>
-        <div 
-            className="wrapperInputImg" 
-            onChange={onChange}
-        >
-            <input
-                type={type}
-                name={name} 
-                onChange={onChangeHandler}
-                className="inputImg"
-            />
-            {imageUrl &&
-                <img src={imageUrl} />
-            }
-            <div className="inputImgIcon">
-                <AddCircleOutlineIcon />
+            <div 
+                className="wrapperInputImg" 
+                onChange={onChange}
+            >
+                <input
+                    type={type}
+                    name={name} 
+                    onChange={onHandlerChange}
+                    className="inputImg"
+                />
+                {imageUrl &&
+                    <img src={imageUrl} alt="book"/>
+                }
+                <div className="inputImgIcon">
+                    <AddCircleOutlineIcon />
+                </div>
             </div>
-        </div>
-        <div className="InputImgError">
-            {error}
-        </div>
+            <div className="InputImgError">
+                {error}
+            </div>
         </>
     )
 }

@@ -6,7 +6,7 @@ type RequestType = {
     url: string,
     method?: string, 
     body?: any, 
-    headers?: {[x: string]: string},
+    headers?: { [x: string]: string },
     notJsonContent?: boolean
 }
 
@@ -15,13 +15,16 @@ type ErrorMapType = {
     msg: string,
 }
 
+export const API = `${process.env.REACT_APP_API_URL}api`
+
 export const useHttp = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [errorsValid, setErrorsValid] = useState<ErrorType[] | null>(null)
 
-    const request = useCallback(async({url, method = 'GET', body, headers = {}, notJsonContent = false}: RequestType) => {
+    const request = useCallback(async({ url, method = 'GET', body, headers = {}, notJsonContent = false }: RequestType) => {
         setLoading(true)
+        setErrorsValid(null)
 
         try {
             if(body && !notJsonContent) {
@@ -29,7 +32,8 @@ export const useHttp = () => {
                 headers['Content-Type'] = 'application/json'
             }
 
-            const response = await fetch(url, {method, body, headers})
+            const response = await fetch(`${API}/${url}`, { method, body, headers })
+
             const data = await response.json()
 
             if(!response.ok) {
@@ -59,5 +63,5 @@ export const useHttp = () => {
         setErrorsValid(null)
     }, [])
     
-    return {loading, setLoading, request, error, clearError, errorsValid}
+    return { loading, setLoading, request, error, clearError, errorsValid }
 }

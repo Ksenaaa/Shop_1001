@@ -1,0 +1,55 @@
+.wrapper-book-page {
+    display: flex;
+    justify-content: space-between;
+}
+
+.wrapper-image {
+    height: 420px;
+    margin: 20px;
+    border: 2px solid rgb(209, 205, 205);
+    display: flex;
+    align-items: center;
+    padding: 15px;
+
+}
+
+.wrapper-text {
+    margin: 20px;
+}
+
+.wrapper-buy {
+    margin: 20px;
+    min-width: 145px;
+}
+
+.name {
+    font-size: 35px;
+}
+
+.author {
+    font-size: 20px;
+    color: rgb(114, 113, 113);
+    margin: 10px 0 20px 0;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.wrapper-image img {
+    height: 100%;
+}
+
+.bookInfo {
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.price {
+    font-size: 20px;
+    margin: 0 0 20px 0;
+}
+
+.title-name {
+    margin: 20px 0 0 20px;
+}

@@ -8,7 +8,7 @@ import { LoadingCircular } from '../../../component/loading/LoadingCircular';
 
 import '../../../App.css';
 
-type ModalLoginType = {
+type Props = {
     onClick: () => void
 }
 
@@ -17,17 +17,19 @@ type LoginUser = {
     password: string, 
 }
 
-export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
-    const [form, setForm] = useState<LoginUser>({email: '', password: ''})
-    const {login} = useContext(AuthContext)
-    const {loading, request, errorsValid} = useHttp()
+export const ModalLogin: FC<Props> = ({ onClick }) => {
+    const [form, setForm] = useState<LoginUser>({ email: '', password: '' })
 
-    const changeHandler = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
-        setForm({...form, [event.target.name]: event.target.value})
-    }, [form]) 
+    const { login } = useContext(AuthContext)
+    
+    const { loading, request, errorsValid } = useHttp()
+
+    const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
+        setForm(prevForm => ({ ...prevForm, [event.target.name]: event.target.value }))
+    }, []) 
 
     const loginHandler = useCallback(async() => {
-        const data = await request({url: 'api/auth/login', method: 'POST', body: {...form}})
+        const data = await request({ url: 'auth/login', method: 'POST', body: { ...form } })
         login({
             jwtToken: data.token,
             id: data.id,
@@ -36,7 +38,7 @@ export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
             icon: data.icon,
             role: data.role,
         })
-    }, [login, form])
+    }, [login, form, request])
         
     return (
         <form 
@@ -49,14 +51,14 @@ export const ModalLogin: FC<ModalLoginType> = ({onClick}) => {
                 label="Email" 
                 type="text" 
                 name="email" 
-                onChange={changeHandler}
+                onChange={handlerChange}
                 errors={errorsValid}
             />
             <TextFields
                 label="Password" 
                 type="password" 
                 name="password" 
-                onChange={changeHandler}
+                onChange={handlerChange}
                 errors={errorsValid}
             />
             <div className="buttonLoginWrapper">

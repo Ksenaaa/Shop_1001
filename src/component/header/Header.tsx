@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, ChangeEvent, useCallback } from 'react'
+import React, { useState, useContext, useRef } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,9 +19,12 @@ import { MenuList } from './components/MenuList';
 export const Header = () => {
   const [isMenuUserOpen, setMenuUserOpen] = useState<boolean>(false)
   const [isMenuListOpen, setMenuListOpen] = useState<boolean>(false)
-  const classes = useStyles()
-  const {logout, userAuth} = useContext(AuthContext)
+  
+  const { logout, userAuth } = useContext(AuthContext)
+  
   const ref = useRef(null)
+
+  const classes = useStyles()
 
   const onLogout = () => {
     setMenuUserOpen(false)
@@ -34,49 +37,49 @@ export const Header = () => {
         <Toolbar>
           {userAuth.token &&
             <>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              onClick={() => setMenuListOpen(true)}
-            >
-              <MenuIcon />
-            </IconButton>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                onClick={() => setMenuListOpen(true)}
+              >
+                <MenuIcon />
+              </IconButton>
 
-            {isMenuListOpen &&
-              <div onClick={() => setMenuListOpen(false)} className={classes.closeMenu}>
-                <MenuList/>
-              </div>
-            }
+              {isMenuListOpen &&
+                <div onClick={() => setMenuListOpen(false)} className={classes.closeMenu}>
+                  <MenuList/>
+                </div>
+              }
 
-            <Typography className={classes.title} variant="h6" noWrap>
-              Page
-            </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+              <Typography className={classes.title} variant="h6" noWrap>
+                Page
+              </Typography>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
               </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              <IconButton color="inherit">
-                  <MailIcon />
-              </IconButton>
-              <IconButton color="inherit">
-                  <ShoppingBasketIcon />
-              </IconButton>
-              <IconButton color="inherit" onClick={() => setMenuUserOpen(true)}>
-                <AccountCircle />
-              </IconButton>
-            </div>
+              <div className={classes.grow} />
+              <div className={classes.sectionDesktop}>
+                <IconButton color="inherit">
+                    <MailIcon />
+                </IconButton>
+                <IconButton color="inherit">
+                    <ShoppingBasketIcon />
+                </IconButton>
+                <IconButton color="inherit" onClick={() => setMenuUserOpen(true)}>
+                  <AccountCircle />
+                </IconButton>
+              </div>
             </>
           }
         </Toolbar>

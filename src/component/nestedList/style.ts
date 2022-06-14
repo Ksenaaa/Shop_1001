@@ -11,4 +11,4 @@ export const useStyles = makeStyles((theme) => ({
   nestedText: {
     color: 'rgba(0, 0, 0, 0.54)',
   },
-}));
+}))
