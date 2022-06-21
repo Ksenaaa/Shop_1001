@@ -37,7 +37,7 @@ export const useHttp = () => {
             const data = await response.json()
 
             if(!response.ok) {
-                const errors = data.errors.map((error: ErrorMapType) => ({
+                const errors = data.errors?.map((error: ErrorMapType) => ({
                     errorField: error.param,
                     errorText: error.msg
                 }))
@@ -54,7 +54,7 @@ export const useHttp = () => {
         } finally {
             setTimeout(() => {
                 setLoading(false)
-            }, 1000) 
+            }, 500) 
         }
     }, [])
 

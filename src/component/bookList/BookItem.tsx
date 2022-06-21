@@ -11,9 +11,10 @@ import './style.css'
 
 type Props = {
     book: IBook
+    bookToLocalStorage: (id: string) => void
 }
 
-export const BookItem: FC<Props> = ({ book }) => {
+export const BookItem: FC<Props> = ({ book, bookToLocalStorage }) => {
     const [favoriteBook, setFavoriteBook] = useState(false)
     
     const navigate = useNavigate()
@@ -22,20 +23,34 @@ export const BookItem: FC<Props> = ({ book }) => {
         setFavoriteBook(favoriteBook === true ? false : true)
     }, [favoriteBook])
 
+    const handlerAddBookToLocalStorage = useCallback(() => {
+        bookToLocalStorage(book.idBook)
+    }, [book.idBook, bookToLocalStorage])
+
+    const handlerGoToBookPage = useCallback(() => {
+        navigate(`${RouteNames.BOOK_PAGE}/${book.idBook}`)
+    }, [book.idBook])
+
     return(
         <div className="wrapperBookItem">
             <div className="bookImg">
                 <img src={`${process.env.REACT_APP_API_URL}${book.img}`} alt="book" />
             </div>
             <div className="bookText">
-                <div className="bookName" onClick={() => navigate(`${RouteNames.BOOK_PAGE}/${book.idBook}`)}>
+                <div className="bookName" onClick={handlerGoToBookPage}>
                     {book.bookName}
                 </div>
                 <div className="bookAuthor">{book.author}</div>
             </div>
             <div className="bookPrice">{book.price}</div>
             <div className="buttonBuy">
-                <Button variant="outlined" color="secondary">Buy</Button>
+                <Button 
+                    variant="outlined" 
+                    color="secondary"
+                    onClick={handlerAddBookToLocalStorage}
+                >
+                    Buy
+                </Button>
             </div>
             <div className="favoriteBook" onClick={handlerFavoriteBook}>
                 {favoriteBook ? <FavoriteIcon /> : <FavoriteBorderIcon />}

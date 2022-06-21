@@ -28,7 +28,7 @@ export const ModalLogin: FC<Props> = ({ onClick }) => {
         setForm(prevForm => ({ ...prevForm, [event.target.name]: event.target.value }))
     }, []) 
 
-    const loginHandler = useCallback(async() => {
+    const handlerLogin = useCallback(async() => {
         const data = await request({ url: 'auth/login', method: 'POST', body: { ...form } })
         login({
             jwtToken: data.token,
@@ -68,7 +68,7 @@ export const ModalLogin: FC<Props> = ({ onClick }) => {
                     Regestration
                 </Button>
                 <Button variant="outlined" color="primary"  
-                    onClick={loginHandler}
+                    onClick={handlerLogin}
                     disabled={loading}
                 >
                     Login

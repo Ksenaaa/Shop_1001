@@ -28,7 +28,7 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
         setForm(prevForm => ({ ...prevForm, [event.target.name]: event.target.value }))
     }, []) 
 
-    const registrationHandler = useCallback(async() => {
+    const handlerRegistration = useCallback(async() => {
         const data = await request({ url: 'auth/register', method: 'POST', body: { ...form } })
         if(!data) return ''
         onClose()
@@ -78,7 +78,7 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
             />
             <div className="buttonLoginWrapper">
                 <Button variant="outlined" color="secondary"  
-                    onClick={registrationHandler}
+                    onClick={handlerRegistration}
                     disabled={loading}
                 >
                     Regestration

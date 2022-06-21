@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Button } from '@material-ui/core'
 import { useParams } from 'react-router'
 
@@ -6,11 +6,14 @@ import { LoadingCircular } from '../../component/loading/LoadingCircular'
 import { useHttp } from '../../hooks/http.hook'
 import { IBook } from '../../interface/IBook'
 import { normalizeBook } from '../../utils/normalizeBooks'
+import { BasketContext } from '../../context/BasketContext'
 
 import './style.css'
 
 export const BookPage = () => {
     const [book, setBook] = useState<IBook>()
+
+    const { bookToLocalStorage } = useContext(BasketContext)
 
     const { loading, request } = useHttp()
 
@@ -25,14 +28,15 @@ export const BookPage = () => {
         showBook()
     }, [showBook])
 
-    const addToBasketHandler = useCallback(() => {
-    }, [])
+    const handlerAddBookToLocalStorage = useCallback(() => {
+        idBook && bookToLocalStorage(idBook)
+    }, [idBook, bookToLocalStorage])
 
     return (
         <>
             <h2 className="title-name">Book: {book?.bookName}</h2>
             {loading && <LoadingCircular />}
-            {book &&
+            {!!book &&
             <div className="wrapper-book-page">
                 <div className="wrapper-image">
                     <img src={`${process.env.REACT_APP_API_URL}${book?.img}`} alt="book" />
@@ -53,7 +57,7 @@ export const BookPage = () => {
                 <div className="wrapper-buy">
                     <div className="price title">Price: {book?.price} $</div>
                     <Button variant="outlined" color="secondary"                    
-                        onClick={addToBasketHandler}
+                        onClick={handlerAddBookToLocalStorage}
                         disabled={loading}
                     >
                         Add to basket

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, useCallback } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,27 +9,35 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 
 import { AuthContext } from '../../context/AuthContext';
 import { useStyles } from './style';
 import { MenuList } from './components/MenuList';
+import { BasketIcon } from './components/BasketIcon';
+import { MessageIcon } from './components/MessageIcon';
 
 export const Header = () => {
   const [isMenuUserOpen, setMenuUserOpen] = useState<boolean>(false)
   const [isMenuListOpen, setMenuListOpen] = useState<boolean>(false)
   
   const { logout, userAuth } = useContext(AuthContext)
-  
+
   const ref = useRef(null)
 
   const classes = useStyles()
 
-  const onLogout = () => {
+  const handlerLogout = () => {
     setMenuUserOpen(false)
     logout()
   }
+
+  const handlerOpenMenuList = useCallback(() => {
+    isMenuListOpen ? setMenuListOpen(false) : setMenuListOpen(true)
+  }, [isMenuListOpen])
+
+  const handlerOpenMenuUser = useCallback(() => {
+    isMenuUserOpen? setMenuUserOpen(false) : setMenuUserOpen(true)
+  }, [isMenuUserOpen])
 
   return (
     <div className={classes.grow} ref={ref}>
@@ -41,13 +49,13 @@ export const Header = () => {
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
-                onClick={() => setMenuListOpen(true)}
+                onClick={handlerOpenMenuList}
               >
                 <MenuIcon />
               </IconButton>
 
               {isMenuListOpen &&
-                <div onClick={() => setMenuListOpen(false)} className={classes.closeMenu}>
+                <div onClick={handlerOpenMenuList} className={classes.closeMenu}>
                   <MenuList/>
                 </div>
               }
@@ -70,13 +78,9 @@ export const Header = () => {
               </div>
               <div className={classes.grow} />
               <div className={classes.sectionDesktop}>
-                <IconButton color="inherit">
-                    <MailIcon />
-                </IconButton>
-                <IconButton color="inherit">
-                    <ShoppingBasketIcon />
-                </IconButton>
-                <IconButton color="inherit" onClick={() => setMenuUserOpen(true)}>
+                <MessageIcon />
+                <BasketIcon />
+                <IconButton color="inherit" onClick={handlerOpenMenuUser}>
                   <AccountCircle />
                 </IconButton>
               </div>
@@ -90,10 +94,10 @@ export const Header = () => {
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={isMenuUserOpen}
-        onClose={() => setMenuUserOpen(false)}
+        onClose={handlerOpenMenuUser}
       >
-        <MenuItem onClick={() => setMenuUserOpen(false)}>My profil</MenuItem>
-        <MenuItem onClick={onLogout}>Exit</MenuItem>
+        <MenuItem onClick={handlerOpenMenuUser}>My profil</MenuItem>
+        <MenuItem onClick={handlerLogout}>Exit</MenuItem>
       </Menu>
     </div>
   )

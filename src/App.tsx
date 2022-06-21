@@ -1,21 +1,21 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
 
-import AuthProvider from './context/AuthProvider'
+import Provider from './context/Provider'
 import { Header } from './component/header/Header';
 import { Router } from './component/router/Router';
 
 import './App.css';
 
 const App = () => (
-  <AuthProvider>
+  <Provider>
     <div className="App">
       <BrowserRouter>
         <Header />
         <Router />
       </BrowserRouter>
     </div>
-  </AuthProvider>
+  </Provider>
 )
 
 export default App;
