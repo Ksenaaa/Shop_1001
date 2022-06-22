@@ -20,7 +20,7 @@ export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value 
     useEffect(() => {
         setImageUrl('')
         setImg(null)
-        if(!img) return
+        if (!img) return
         setImageUrl(URL.createObjectURL(img))
     }, [value])
 

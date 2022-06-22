@@ -17,10 +17,10 @@ export const Basket = () => {
     
     const { loading, request } = useHttp()
     
-    const idForRequest = booksLocalStore.map(book => book.idBook)
+    const idsForRequest = booksLocalStore.map(book => book.idBook)
 
     useEffect(() => {
-        idForRequest.length && showBooks()
+        idsForRequest.length && showBooks()
     }, [])
 
     useEffect(() => {
@@ -29,10 +29,10 @@ export const Basket = () => {
     }, [booksLocalStore])
 
     const showBooks = useCallback(async() => {
-        const result = await request({ url: formatQueryString(`basket/show-books`, { id: idForRequest }) })
+        const result = await request({ url: formatQueryString(`basket/books`, { id: idsForRequest }) })
         const resultData = result.map((book: IBookResponce[]) => book[0])
         setBooks([...normalizeBooks(resultData)])
-    }, [request, idForRequest])
+    }, [request, idsForRequest])
 
     return (
         <div className="wrapperBasket">

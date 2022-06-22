@@ -9,7 +9,7 @@ export type ErrorType = {
 }
 
 export const handleErrors = ({ name, errors }: ErrorsType) => {
-    if(!errors?.length) return ''
+    if (!errors?.length) return ''
 
     return errors
         .map(err => (err.errorField === name) ? err.errorText : '')

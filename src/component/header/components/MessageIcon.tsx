@@ -11,9 +11,9 @@ export const MessageIcon = () => {
 
     const classes = useStyles()
 
-    const handlerToMessagesPage = useCallback(() => {
+    const handlerToMessagesPage = useCallback(() => 
         navigate(RouteNames.MESSAGES)
-    }, [])
+    , [])
 
     return (
         <IconButton color="inherit" onClick={handlerToMessagesPage}>

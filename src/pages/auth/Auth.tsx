@@ -4,17 +4,18 @@ import { ModalRegistration } from './components/ModalRegistration'
 import { ModalLogin } from './components/ModalLogin'
 
 import '../../App.css';
+import { useToggle } from '../../hooks/toggle.hook';
 
 export const Auth = () => {
-    const [modalRegistrationVisible, setModalRegistrationVisible] = useState(false)
-
-    const handlerOpenModalRegistration = useCallback(() => {
-        modalRegistrationVisible ? setModalRegistrationVisible(false) : setModalRegistrationVisible(true)
-    }, [modalRegistrationVisible])
+    const { isOpen, onToggle } = useToggle()
+    
+    const handlerOpenModalRegistration = useCallback(() => 
+        onToggle()
+    , [onToggle])
 
     return (
         <>
-            {modalRegistrationVisible  
+            {isOpen  
                 ? <ModalRegistration
                     onClose={handlerOpenModalRegistration}
                 /> 

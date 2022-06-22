@@ -15,29 +15,30 @@ import { useStyles } from './style';
 import { MenuList } from './components/MenuList';
 import { BasketIcon } from './components/BasketIcon';
 import { MessageIcon } from './components/MessageIcon';
+import { useToggle } from '../../hooks/toggle.hook';
 
 export const Header = () => {
-  const [isMenuUserOpen, setMenuUserOpen] = useState<boolean>(false)
-  const [isMenuListOpen, setMenuListOpen] = useState<boolean>(false)
-  
   const { logout, userAuth } = useContext(AuthContext)
+
+  const isOpenMenuList = useToggle()
+  const isOpenMenuUser = useToggle()
 
   const ref = useRef(null)
 
   const classes = useStyles()
 
   const handlerLogout = () => {
-    setMenuUserOpen(false)
+    isOpenMenuUser.onToggle()
     logout()
   }
 
-  const handlerOpenMenuList = useCallback(() => {
-    isMenuListOpen ? setMenuListOpen(false) : setMenuListOpen(true)
-  }, [isMenuListOpen])
+  const openMenuList = useCallback(() => 
+    isOpenMenuList.onToggle()
+  , [isOpenMenuList.onToggle])
 
-  const handlerOpenMenuUser = useCallback(() => {
-    isMenuUserOpen? setMenuUserOpen(false) : setMenuUserOpen(true)
-  }, [isMenuUserOpen])
+  const openMenuUser = useCallback(() => 
+    isOpenMenuUser.onToggle()
+  , [isOpenMenuUser.onToggle])
 
   return (
     <div className={classes.grow} ref={ref}>
@@ -49,13 +50,13 @@ export const Header = () => {
                 edge="start"
                 className={classes.menuButton}
                 color="inherit"
-                onClick={handlerOpenMenuList}
+                onClick={openMenuList}
               >
                 <MenuIcon />
               </IconButton>
 
-              {isMenuListOpen &&
-                <div onClick={handlerOpenMenuList} className={classes.closeMenu}>
+              {isOpenMenuList.isOpen &&
+                <div onClick={openMenuList} className={classes.closeMenu}>
                   <MenuList/>
                 </div>
               }
@@ -80,7 +81,7 @@ export const Header = () => {
               <div className={classes.sectionDesktop}>
                 <MessageIcon />
                 <BasketIcon />
-                <IconButton color="inherit" onClick={handlerOpenMenuUser}>
+                <IconButton color="inherit" onClick={openMenuUser}>
                   <AccountCircle />
                 </IconButton>
               </div>
@@ -93,10 +94,10 @@ export const Header = () => {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMenuUserOpen}
-        onClose={handlerOpenMenuUser}
+        open={isOpenMenuUser.isOpen}
+        onClose={openMenuUser}
       >
-        <MenuItem onClick={handlerOpenMenuUser}>My profil</MenuItem>
+        <MenuItem onClick={openMenuUser}>My profil</MenuItem>
         <MenuItem onClick={handlerLogout}>Exit</MenuItem>
       </Menu>
     </div>

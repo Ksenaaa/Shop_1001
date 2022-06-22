@@ -5,14 +5,14 @@ import { LocalStorageBookType } from "../hooks/basket.hook";
 
 type BasketContextType = {
     booksLocalStore: LocalStorageBookType[],
-    bookToLocalStorage: (id: string) => void,
-    bookDecreaseInLocalStorage: (id: string) => void,
-    bookLocalStorRemove: (id: string) => void,
+    addBookToBasket: (id: string) => void,
+    decreaseBookFromBasket: (id: string) => void,
+    removeBookFromBasket: (id: string) => void,
 }
 
 export const BasketContext = createContext<BasketContextType>({ 
     booksLocalStore: [],
-    bookToLocalStorage: (id: string) => {},
-    bookDecreaseInLocalStorage: (id: string) => {},
-    bookLocalStorRemove: (id: string) => {},
+    addBookToBasket: (id: string) => {},
+    decreaseBookFromBasket: (id: string) => {},
+    removeBookFromBasket: (id: string) => {},
 })

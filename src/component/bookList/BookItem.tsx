@@ -11,25 +11,25 @@ import './style.css'
 
 type Props = {
     book: IBook
-    bookToLocalStorage: (id: string) => void
+    addBookToBasket: (id: string) => void
 }
 
-export const BookItem: FC<Props> = ({ book, bookToLocalStorage }) => {
+export const BookItem: FC<Props> = ({ book, addBookToBasket }) => {
     const [favoriteBook, setFavoriteBook] = useState(false)
     
     const navigate = useNavigate()
 
-    const handlerFavoriteBook = useCallback(() => {
+    const handlerFavoriteBook = useCallback(() => 
         setFavoriteBook(favoriteBook === true ? false : true)
-    }, [favoriteBook])
+    , [favoriteBook])
 
-    const handlerAddBookToLocalStorage = useCallback(() => {
-        bookToLocalStorage(book.idBook)
-    }, [book.idBook, bookToLocalStorage])
+    const handlerClickButton = useCallback(() => 
+        addBookToBasket(book.idBook)
+    , [book.idBook, addBookToBasket])
 
-    const handlerGoToBookPage = useCallback(() => {
+    const navigateToBookPage = useCallback(() => 
         navigate(`${RouteNames.BOOK_PAGE}/${book.idBook}`)
-    }, [book.idBook])
+    , [book.idBook])
 
     return(
         <div className="wrapperBookItem">
@@ -37,7 +37,7 @@ export const BookItem: FC<Props> = ({ book, bookToLocalStorage }) => {
                 <img src={`${process.env.REACT_APP_API_URL}${book.img}`} alt="book" />
             </div>
             <div className="bookText">
-                <div className="bookName" onClick={handlerGoToBookPage}>
+                <div className="bookName" onClick={navigateToBookPage}>
                     {book.bookName}
                 </div>
                 <div className="bookAuthor">{book.author}</div>
@@ -47,7 +47,7 @@ export const BookItem: FC<Props> = ({ book, bookToLocalStorage }) => {
                 <Button 
                     variant="outlined" 
                     color="secondary"
-                    onClick={handlerAddBookToLocalStorage}
+                    onClick={handlerClickButton}
                 >
                     Buy
                 </Button>

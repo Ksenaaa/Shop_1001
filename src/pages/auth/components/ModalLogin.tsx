@@ -24,9 +24,9 @@ export const ModalLogin: FC<Props> = ({ onClick }) => {
     
     const { loading, request, errorsValid } = useHttp()
 
-    const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
+    const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => 
         setForm(prevForm => ({ ...prevForm, [event.target.name]: event.target.value }))
-    }, []) 
+    , []) 
 
     const handlerLogin = useCallback(async() => {
         const data = await request({ url: 'auth/login', method: 'POST', body: { ...form } })

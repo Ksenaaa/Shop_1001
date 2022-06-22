@@ -15,19 +15,19 @@ type Props = {
 }
 
 export const BasketList: FC<Props> = ({ books }) => {
-    const { booksLocalStore, bookToLocalStorage, bookLocalStorRemove, bookDecreaseInLocalStorage } = useContext(BasketContext)
+    const { booksLocalStore, addBookToBasket, removeBookFromBasket, decreaseBookFromBasket } = useContext(BasketContext)
     
     const navigate = useNavigate()
 
     const totalSum = useMemo(() => 
         books.map((book: IBook) => 
             sumBook(booksLocalStore, book.idBook, book.price))
-                .reduce((total: number, amount: number) => +(total + amount).toFixed(2), 0)
+                .reduce((total: number, quantity: number) => +(total + quantity).toFixed(2), 0)
     , [booksLocalStore, books])
     
-    const handlerToOrder = useCallback(() => {
+    const handlerToOrder = useCallback(() => 
         navigate(RouteNames.ORDER)
-    }, [])
+    , [])
 
     return (
         <div className="wrapperBasketList" >
@@ -47,9 +47,9 @@ export const BasketList: FC<Props> = ({ books }) => {
                     key={book.idBook} 
                     book={book}
                     booksLocalStore={booksLocalStore}
-                    bookLocalStorRemove={bookLocalStorRemove}
-                    bookToLocalStorage={bookToLocalStorage}
-                    bookDecreaseInLocalStorage={bookDecreaseInLocalStorage}
+                    removeBookFromBasket={removeBookFromBasket}
+                    addBookToBasket={addBookToBasket}
+                    decreaseBookFromBasket={decreaseBookFromBasket}
                 />
             )}
             <div className="basketTotal">

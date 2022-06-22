@@ -3,14 +3,14 @@ const Book = require('../models/Book')
 const router = Router() 
 
 router.get(
-    '/show-books',
+    '/books',
     async (req, res) => {
         try {
             const { id } = req.query
             const idQuery = id.split(',')
-            let book = idQuery.map(id => Book.find({ _id: id }))
-            const ownerInformation = await Promise.all(book)
-            res.json(ownerInformation)
+            let mappedBook = idQuery.map(id => Book.find({ _id: id }))
+            const books = await Promise.all(mappedBook)
+            res.json(books)
         } catch (e) {
             res.status(500).json({ message: "its Error, try again!" })
         }

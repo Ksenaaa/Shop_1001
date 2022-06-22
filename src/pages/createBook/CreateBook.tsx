@@ -47,14 +47,14 @@ export const CreateBook = () => {
 
         const data = await request({ url: 'create/create-book', method: 'POST', body: formData, notJsonContent: true })
 
-        if(data.status === 200) {
+        if (data.status === 200) {
             setForm({})
         }
     }, [form])
     
-    const handlerToMainPage = useCallback(() => {
+    const handlerToMainPage = useCallback(() => 
         closeCreatePage(RouteNames.MAIN)
-    }, [])
+    , [])
 
     return (
         <form className="wrapper">

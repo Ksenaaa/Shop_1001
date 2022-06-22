@@ -12,34 +12,27 @@ export const useBasket = () => {
 
    const [booksLocalStore, setBooksLocalStore] = useState<LocalStorageBookType[]>(bookData)
 
-   useEffect(() => {
+   useEffect(() => 
       localStorage.setItem(storageName, JSON.stringify(booksLocalStore))
-   }, [booksLocalStore])
+   , [booksLocalStore])
 
-   const bookToLocalStorage = useCallback((id: string) => {
+   const addBookToBasket = useCallback((id: string) => {
       setBooksLocalStore(prevState => {
-         const hasBook = prevState.find(book => book.idBook === id)
-         
-         if (hasBook) {
-            return prevState.map(book => {
-               if (book.idBook === id) {
-                  return { ...book, quantity: book.quantity + 1 }
-               }
-               return book
-            })
-         } else {
+         const findBook = prevState.find(book => book.idBook === id)
+
+         if (!findBook) 
             return [...prevState, { idBook: id, quantity: 1 }]
-         }
+         
+         return prevState.map(book => (book.idBook === id) ? { ...book, quantity: book.quantity + 1 } : book)
       })
    }, [setBooksLocalStore])
 
-   const bookDecreaseInLocalStorage = useCallback((id: string) => {
+   const decreaseBookFromBasket = useCallback((id: string) => {
       setBooksLocalStore(prevState => {
          return prevState.map(book => {
-            if(book.idBook === id) {
-               if(book.quantity === 1) {
-                  return book
-               }
+            if (book.idBook === id) {
+               if (book.quantity === 1) return book
+               
                return { ...book, quantity: book.quantity - 1 }
             }
             return book
@@ -47,9 +40,9 @@ export const useBasket = () => {
       })
    }, [setBooksLocalStore])
 
-   const bookLocalStorRemove = useCallback((id: string) => {
+   const removeBookFromBasket = useCallback((id: string) => 
       setBooksLocalStore(prevState => prevState.filter(book => book.idBook !== id))
-   }, [setBooksLocalStore])
+   , [setBooksLocalStore])
 
-   return { booksLocalStore, bookToLocalStorage, bookDecreaseInLocalStorage, bookLocalStorRemove }
+   return { booksLocalStore, addBookToBasket, decreaseBookFromBasket, removeBookFromBasket }
 }

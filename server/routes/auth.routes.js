@@ -15,7 +15,7 @@ router.post(
             .withMessage('Name must include one lowercase character, one uppercase character!')
             .custom(async(value) => {
                 const findName = await User.findOne({name: value})
-                if(findName) { 
+                if (findName) { 
                     throw new Error('This name are exists!') 
                 }
                 return true;
@@ -24,7 +24,7 @@ router.post(
             .isEmail().withMessage('Not an email!')
             .custom(async(value) => {
                 const findEmail = await User.findOne({email: value}) 
-                if(findEmail) { 
+                if (findEmail) { 
                     throw new Error('This email are exists!') 
                 }
                 return true;
@@ -37,7 +37,7 @@ router.post(
             .isLength({min:1}).withMessage('Enter checkpassword!')
             .custom(async (checkPassword, {req}) => {
                 const password = req.body.password
-                if(password !== checkPassword) {
+                if (password !== checkPassword) {
                   throw new Error('Passwords do not match!')
                 }
               }),
@@ -47,7 +47,7 @@ router.post(
     async (req, res) => {
         try{    
             const errors = validationResult(req)
-            if(!errors.isEmpty()) {
+            if (!errors.isEmpty()) {
                 return res.status(400).json({ 
                     errors: errors.array(),
                 })
@@ -73,9 +73,9 @@ router.post(
         check('email')
             .isLength({min:1}).withMessage('Enter email!')
             .custom(async(value) => {
-                if(value) {
+                if (value) {
                     const findEmail = await User.findOne({email: value}) 
-                    if(!findEmail) { 
+                    if (!findEmail) { 
                         throw new Error('This email is not registered!') 
                     }
                 }
@@ -83,12 +83,12 @@ router.post(
         check('password')
             .isLength({min:1}).withMessage('Enter password!')
             .custom(async(password, {req}) => {
-                if(password) {
+                if (password) {
                     const emailUser = req.body.email
                     const findUser = await User.findOne({email: emailUser}) 
-                    if(findUser) {
+                    if (findUser) {
                         const isPassEquals = await bcrypt.compare(password, findUser.password)
-                        if(!isPassEquals) {
+                        if (!isPassEquals) {
                             throw new Error('Password do not match!') 
                         }
                     }
@@ -98,7 +98,7 @@ router.post(
     async (req, res) => {
         try{    
             const errors = validationResult(req)
-            if(!errors.isEmpty()) {
+            if (!errors.isEmpty()) {
                 return res.status(400).json({ 
                     errors: errors.array(),
                 })
@@ -108,8 +108,8 @@ router.post(
             const findUser = await User.findOne({email}) 
             const isPassEquals = await bcrypt.compare(password, findUser.password)
 
-            if(findUser.email === email) {
-                if(isPassEquals) {               
+            if (findUser.email === email) {
+                if (isPassEquals) {               
                     const token = jwt.sign(
                         {id: findUser.id},
                         config.get('jwtSecret'),

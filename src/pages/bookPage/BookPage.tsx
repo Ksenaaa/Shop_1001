@@ -13,7 +13,7 @@ import './style.css'
 export const BookPage = () => {
     const [book, setBook] = useState<IBook>()
 
-    const { bookToLocalStorage } = useContext(BasketContext)
+    const { addBookToBasket } = useContext(BasketContext)
 
     const { loading, request } = useHttp()
 
@@ -28,9 +28,9 @@ export const BookPage = () => {
         showBook()
     }, [showBook])
 
-    const handlerAddBookToLocalStorage = useCallback(() => {
-        idBook && bookToLocalStorage(idBook)
-    }, [idBook, bookToLocalStorage])
+    const handlerAddBookToLocalStorage = useCallback(() => 
+        idBook && addBookToBasket(idBook)
+    , [idBook, addBookToBasket])
 
     return (
         <>

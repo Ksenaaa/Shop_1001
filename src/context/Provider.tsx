@@ -11,11 +11,11 @@ type Props = {
  
 const Provider: FC<Props> = ({ children }) => {
     const { userAuth, login, logout } = useAuth()
-    const { booksLocalStore, bookToLocalStorage, bookDecreaseInLocalStorage, bookLocalStorRemove } = useBasket()
+    const { booksLocalStore, addBookToBasket, decreaseBookFromBasket, removeBookFromBasket } = useBasket()
 
     return (
         <AuthContext.Provider value={{ login, userAuth, logout }}>
-            <BasketContext.Provider value={{ booksLocalStore, bookToLocalStorage, bookDecreaseInLocalStorage, bookLocalStorRemove }}>
+            <BasketContext.Provider value={{ booksLocalStore, addBookToBasket, decreaseBookFromBasket, removeBookFromBasket }}>
                 {children}
             </BasketContext.Provider>
         </AuthContext.Provider>

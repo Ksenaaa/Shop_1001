@@ -12,7 +12,7 @@ type Props = {
 }
 
 export const BookList: FC<Props> = ({ books, onScroll }) => {
-    const { bookToLocalStorage } = useContext(BasketContext)
+    const { addBookToBasket } = useContext(BasketContext)
 
     return (
         <div className="wrapperBookList" onScroll={onScroll}>
@@ -20,7 +20,7 @@ export const BookList: FC<Props> = ({ books, onScroll }) => {
                 <BookItem
                     key={book.idBook}
                     book={book}
-                    bookToLocalStorage={bookToLocalStorage}
+                    addBookToBasket={addBookToBasket}
                 />
             )}
         </div>

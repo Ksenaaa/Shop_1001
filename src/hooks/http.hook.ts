@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 
 import { ErrorType } from "../utils/ErrorsHanding"
+import { timeLoading } from "./constants"
 
 type RequestType = {
     url: string,
@@ -27,7 +28,7 @@ export const useHttp = () => {
         setErrorsValid(null)
 
         try {
-            if(body && !notJsonContent) {
+            if (body && !notJsonContent) {
                 body = JSON.stringify(body)
                 headers['Content-Type'] = 'application/json'
             }
@@ -36,7 +37,7 @@ export const useHttp = () => {
 
             const data = await response.json()
 
-            if(!response.ok) {
+            if (!response.ok) {
                 const errors = data.errors?.map((error: ErrorMapType) => ({
                     errorField: error.param,
                     errorText: error.msg
@@ -52,9 +53,9 @@ export const useHttp = () => {
             setError(e.message)
             throw e
         } finally {
-            setTimeout(() => {
+            setTimeout(() => 
                 setLoading(false)
-            }, 500) 
+            , timeLoading) 
         }
     }, [])
 

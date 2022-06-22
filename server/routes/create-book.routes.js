@@ -36,10 +36,10 @@ router.post(
             const file = req?.files?.img
             let imgError
 
-            if(file) {
+            if (file) {
                 const fileExtension = file.mimetype.split('/').pop()
                 const exceptedFileType = ['png', 'jpeg', 'jpg', 'webp']
-                if(!exceptedFileType.includes(fileExtension)) {
+                if (!exceptedFileType.includes(fileExtension)) {
                     imgError =  {value: '', param: "img", msg: "Type file is not valid. Only png, jpeg, jpg, webp!"}
                     errors.errors.push(imgError)
                 }
@@ -47,7 +47,7 @@ router.post(
                 imgError = {value: '', param: "img", msg: "Upload a picture of the book!"}
                 errors.errors.push(imgError)
             } 
-            if(!errors.isEmpty() || imgError) {
+            if (!errors.isEmpty() || imgError) {
                 return res.status(400).json({errors: errors.array()})
             }
 
