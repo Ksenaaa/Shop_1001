@@ -24,7 +24,7 @@ router.get(
         try {
             const {limit, page} = req.query
             const {id} = req.params
-            const books = await Book.find({sellerId: req.params.id})
+            const books = await Book.find({sellerId: id})
             res.json({
                 data: books.slice(limit * (page - 1), limit * page), 
                 totalCount: books?.length - 1 || 0 
@@ -40,7 +40,7 @@ router.get(
     async (req, res) => {
         try {
             const {id} = req.params
-            let book = await Book.find({_id: req.params.id})
+            let book = await Book.find({_id: id})
             res.json(book[0])
         } catch (e) {
             res.status(500).json({message: "its Error, try again!"})

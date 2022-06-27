@@ -24,13 +24,13 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
     
     const { loading, request, errorsValid } = useHttp()
     
-    const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => {
+    const handlerChange = useCallback((event: ChangeEvent<HTMLInputElement>): void => 
         setForm(prevForm => ({ ...prevForm, [event.target.name]: event.target.value }))
-    }, []) 
+    , []) 
 
-    const registrationHandler = useCallback(async() => {
+    const handlerRegistration = useCallback(async() => {
         const data = await request({ url: 'auth/register', method: 'POST', body: { ...form } })
-        if(!data) return ''
+        if (!data) return ''
         onClose()
     }, [onClose, form, request]) 
 
@@ -78,7 +78,7 @@ export const ModalRegistration: FC<Props> = ({ onClose }) => {
             />
             <div className="buttonLoginWrapper">
                 <Button variant="outlined" color="secondary"  
-                    onClick={registrationHandler}
+                    onClick={handlerRegistration}
                     disabled={loading}
                 >
                     Regestration

@@ -36,7 +36,7 @@ export const BooksSeller = () => {
         const { scrollTop, scrollHeight } = target as HTMLDivElement
         const fetchingHeight = scrollHeight - (scrollTop + window.innerHeight)
 
-        if(fetchingHeight < 100) {
+        if (fetchingHeight < 100) {
             showBooks()
         }
     }, [books.length, loading, totalCount])
@@ -45,7 +45,7 @@ export const BooksSeller = () => {
         <>
             <h1>My books</h1>
             {loading && <LoadingCircular />}
-            {books?.length ? <BookList books={books} onScroll={handleScroll}/> : <h2>No books..(</h2>}
+            {!!books.length ? <BookList books={books} onScroll={handleScroll}/> : <h2>No books..(</h2>}
         </>
     )
 } 

@@ -11,16 +11,25 @@ import './style.css'
 
 type Props = {
     book: IBook
+    addBookToBasket: (id: string) => void
 }
 
-export const BookItem: FC<Props> = ({ book }) => {
+export const BookItem: FC<Props> = ({ book, addBookToBasket }) => {
     const [favoriteBook, setFavoriteBook] = useState(false)
     
     const navigate = useNavigate()
 
-    const handlerFavoriteBook = useCallback(() => {
+    const handlerFavoriteBook = useCallback(() => 
         setFavoriteBook(favoriteBook === true ? false : true)
-    }, [favoriteBook])
+    , [favoriteBook])
+
+    const handlerClickButton = useCallback(() => 
+        addBookToBasket(book.idBook)
+    , [book.idBook, addBookToBasket])
+
+    const navigateToBookPage = useCallback(() => 
+        navigate(`${RouteNames.BOOK_PAGE}/${book.idBook}`)
+    , [book.idBook])
 
     return(
         <div className="wrapperBookItem">
@@ -28,14 +37,20 @@ export const BookItem: FC<Props> = ({ book }) => {
                 <img src={`${process.env.REACT_APP_API_URL}${book.img}`} alt="book" />
             </div>
             <div className="bookText">
-                <div className="bookName" onClick={() => navigate(`${RouteNames.BOOK_PAGE}/${book.idBook}`)}>
+                <div className="bookName" onClick={navigateToBookPage}>
                     {book.bookName}
                 </div>
                 <div className="bookAuthor">{book.author}</div>
             </div>
             <div className="bookPrice">{book.price}</div>
             <div className="buttonBuy">
-                <Button variant="outlined" color="secondary">Buy</Button>
+                <Button 
+                    variant="outlined" 
+                    color="secondary"
+                    onClick={handlerClickButton}
+                >
+                    Buy
+                </Button>
             </div>
             <div className="favoriteBook" onClick={handlerFavoriteBook}>
                 {favoriteBook ? <FavoriteIcon /> : <FavoriteBorderIcon />}

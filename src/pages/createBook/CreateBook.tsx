@@ -39,7 +39,7 @@ export const CreateBook = () => {
         setForm({ ...form, [target.name]: newValue } as Record<string, keyof Omit<IBook, 'idBook'>>)
     }, [form]) 
     
-    const createBookHandler = useCallback(async() => {
+    const handlerCreateBook = useCallback(async() => {
         const formData = new FormData()
         const newForm = { ...form, sellerId: userAuth.userId } as Record<string, keyof Omit<IBook, 'idBook'>>
 
@@ -47,11 +47,15 @@ export const CreateBook = () => {
 
         const data = await request({ url: 'create/create-book', method: 'POST', body: formData, notJsonContent: true })
 
-        if(data.status === 200) {
+        if (data.status === 200) {
             setForm({})
         }
     }, [form])
     
+    const handlerToMainPage = useCallback(() => 
+        closeCreatePage(RouteNames.MAIN)
+    , [])
+
     return (
         <form className="wrapper">
             {loading && <LoadingCircular/>}
@@ -136,12 +140,12 @@ export const CreateBook = () => {
             </div>
 
             <div className="buttonWrapper">
-                <div className="wrapperCloseWindow" onClick={() => closeCreatePage(RouteNames.MAIN)}>
+                <div className="wrapperCloseWindow" onClick={handlerToMainPage}>
                     <ArrowBackIcon />
                     <h4>Close</h4>
                 </div>
                 <Button variant="outlined" color="secondary"  
-                    onClick={createBookHandler}
+                    onClick={handlerCreateBook}
                     disabled={loading}
                 >
                     Create
