@@ -41,7 +41,7 @@ export const Main = () => {
         return (
         <div>
             {loading && <LoadingCircular />}
-            {books.length && <BookList books={books} onScroll={handleScroll}/>}
+            {!!books.length && <BookList books={books} onScroll={handleScroll}/>}
         </div>
     )
 } 

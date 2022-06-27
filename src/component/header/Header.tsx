@@ -11,34 +11,35 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import { AuthContext } from '../../context/AuthContext';
-import { useStyles } from './style';
 import { MenuList } from './components/MenuList';
 import { BasketIcon } from './components/BasketIcon';
 import { MessageIcon } from './components/MessageIcon';
 import { useToggle } from '../../hooks/toggle.hook';
+import { useStyles } from './style';
 
 export const Header = () => {
   const { logout, userAuth } = useContext(AuthContext)
 
-  const isOpenMenuList = useToggle()
-  const isOpenMenuUser = useToggle()
+  const { isOpen: isOpenMenuList, onToggle: toggleMenuList } = useToggle()
+
+  const { isOpen: isOpenMenuUser, onToggle: toggleMenuUser } = useToggle()
 
   const ref = useRef(null)
 
   const classes = useStyles()
 
   const handlerLogout = () => {
-    isOpenMenuUser.onToggle()
+    toggleMenuUser()
     logout()
   }
 
   const openMenuList = useCallback(() => 
-    isOpenMenuList.onToggle()
-  , [isOpenMenuList.onToggle])
+    toggleMenuList()
+  , [toggleMenuList])
 
   const openMenuUser = useCallback(() => 
-    isOpenMenuUser.onToggle()
-  , [isOpenMenuUser.onToggle])
+    toggleMenuUser()
+  , [toggleMenuUser])
 
   return (
     <div className={classes.grow} ref={ref}>
@@ -55,7 +56,7 @@ export const Header = () => {
                 <MenuIcon />
               </IconButton>
 
-              {isOpenMenuList.isOpen &&
+              {isOpenMenuList &&
                 <div onClick={openMenuList} className={classes.closeMenu}>
                   <MenuList/>
                 </div>
@@ -94,7 +95,7 @@ export const Header = () => {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isOpenMenuUser.isOpen}
+        open={isOpenMenuUser}
         onClose={openMenuUser}
       >
         <MenuItem onClick={openMenuUser}>My profil</MenuItem>
