@@ -1,5 +1,7 @@
 export const selectOptionCategory = ['Astronomy', 'Geography', 'History', 'Humour', 'Medicine', 'Romance', 'Science']
 
+export const selectOptionLanguage = ['Ukrainian', 'English', 'Poland']
+
 export const selectOptionYear = () => {
     let allYears = [];
     let maxOffset = 100;

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
 import { Button } from '@material-ui/core'
-import { useParams } from 'react-router'
 
 import { LoadingCircular } from '../../component/loading/LoadingCircular'
 import { useHttp } from '../../hooks/http.hook'
@@ -19,10 +19,16 @@ export const BookPage = () => {
 
     const { idBook } = useParams()
 
+    const navigate = useNavigate()
+
     const showBook = useCallback(async () => {
         const result = await request({ url: `books/${idBook}` })
         setBook(normalizeBook(result)) 
     }, [idBook, request])
+
+    const goBackPage = useCallback(() => 
+        navigate(-1)
+    , [])
 
     useEffect(() => {
         showBook()
@@ -34,6 +40,11 @@ export const BookPage = () => {
 
     return (
         <>
+            <div className="wrapperClosePage">
+                <Button variant="text" color="secondary" onClick={goBackPage}>
+                    Go back
+                </Button>
+            </div>
             <h2 className="title-name">Book: {book?.bookName}</h2>
             {loading && <LoadingCircular />}
             {!!book &&

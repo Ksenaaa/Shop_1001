@@ -40,7 +40,7 @@ export const BookItem: FC<Props> = ({ book, addBookToBasket }) => {
                 <div className="bookName" onClick={navigateToBookPage}>
                     {book.bookName}
                 </div>
-                <div className="bookAuthor">{book.author}</div>
+                <div className="bookAuthor">{book.author} / {book.year}</div>
             </div>
             <div className="bookPrice">{book.price}</div>
             <div className="buttonBuy">
