@@ -1,4 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
+import { Button } from '@material-ui/core'
 
 import { LoadingCircular } from '../../component/loading/LoadingCircular'
 import { BasketContext } from '../../context/BasketContext'
@@ -18,6 +20,8 @@ export const Basket = () => {
     const { loading, request } = useHttp()
     
     const idsForRequest = booksLocalStore.map(book => book.idBook)
+    
+    const navigate = useNavigate()
 
     useEffect(() => {
         idsForRequest.length && showBooks()
@@ -27,6 +31,10 @@ export const Basket = () => {
         setBooks(prevBooks => prevBooks.filter(book => 
             booksLocalStore.find(localBook => book.idBook === localBook.idBook && localBook.quantity )))
     }, [booksLocalStore])
+    
+    const goBackPage = useCallback(() => 
+        navigate(-1)
+    , [])
 
     const showBooks = useCallback(async() => {
         const result = await request({ url: formatQueryString(`basket/books`, { id: idsForRequest }) })
@@ -35,12 +43,19 @@ export const Basket = () => {
     }, [request, idsForRequest])
 
     return (
-        <div className="wrapperBasket">
-            {loading && <LoadingCircular />}
-            {books.length 
-                ? <BasketList books={books} />
-                : <h2>Sorry, there are no items in the basket ((</h2>
-            }
-        </div>
+        <>
+            <div className="wrapperClosePage">
+                <Button variant="text" color="secondary" onClick={goBackPage}>
+                    Go back
+                </Button>
+            </div>
+            <div className="wrapperBasket">
+                {loading && <LoadingCircular />}
+                {books.length 
+                    ? <BasketList books={books} />
+                    : <h2>Sorry, there are no items in the basket ((</h2>
+                }
+            </div>
+        </>
     )
 }

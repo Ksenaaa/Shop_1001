@@ -1,6 +1,7 @@
 .App{
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     color: rgb(70, 70, 68);
+    height: 600px;
 }
 
 .wrapperLogin {

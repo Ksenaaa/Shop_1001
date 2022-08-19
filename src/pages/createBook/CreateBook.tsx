@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useCallback, useContext, useState } from 'react'
 import { useNavigate } from 'react-router';
 import { Button } from '@material-ui/core'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { useHttp } from '../../hooks/http.hook'
 import { TextFields } from '../../component/input/Input'
@@ -13,17 +12,21 @@ import { InputUploadImg } from './components/InputUploadImg';
 import { LoadingCircular } from '../../component/loading/LoadingCircular';
 import { parceStringToNumberAndPoint } from '../../utils/parceStringToNumberAndPoint'
 import { IBook } from '../../interface/IBook';
-
-import { selectOptionCategory, selectOptionYear } from './constants'
+import { SnackbarAccepted } from '../../component/snackbar/SnackbarAccepted';
+import { useToggle } from '../../hooks/toggle.hook';
+import { selectOptionCategory, selectOptionLanguage, selectOptionYear } from './constants'
 
 import './style.css'
 
 export const CreateBook = () => {
     const [form, setForm] = useState<Record<string, keyof Omit<IBook, 'idBook'>>>({})
-
+    const [messageCreated, setMessageCreated] = useState<string>('')
+    
     const { userAuth } = useContext(AuthContext)
-
+    
     const { loading, request, errorsValid } = useHttp()
+    
+    const { isOpen: isShowSnackbar, onToggle: toggleShowSnackbar } = useToggle()
     
     const closeCreatePage = useNavigate()
 
@@ -49,6 +52,8 @@ export const CreateBook = () => {
 
         if (data.status === 200) {
             setForm({})
+            setMessageCreated(data.message)
+            toggleShowSnackbar()
         }
     }, [form])
     
@@ -56,9 +61,20 @@ export const CreateBook = () => {
         closeCreatePage(RouteNames.MAIN)
     , [])
 
+    const onCloseSnackbar = useCallback(() => {
+        toggleShowSnackbar()
+        setMessageCreated('')
+    }, [toggleShowSnackbar])
+
     return (
         <form className="wrapper">
             {loading && <LoadingCircular/>}
+            {isShowSnackbar &&
+                <div className="wrapperSnackBar">
+                    <SnackbarAccepted alertMessage={messageCreated} />
+                    <div onClick={onCloseSnackbar} className="closeSnackbar" />
+                </div>
+            }
             <div className="wrapperTitle">
                 <h2>New Book</h2>
             </div>
@@ -111,14 +127,17 @@ export const CreateBook = () => {
                             {selectOptionYear().map(option => <SelectOption value={option} key={option} />)}
                         </>
                     </SelectComponent>
-                    <TextFields
+                    <SelectComponent
                         label="Language" 
-                        type="text" 
                         name="language" 
                         value={form?.language || ''}
                         onChange={handlerChange}
                         errors={errorsValid}
-                    />
+                    >
+                        <>
+                            {selectOptionLanguage.map(option => <SelectOption value={option} key={option} />)}
+                        </>
+                    </SelectComponent>
                     <TextFields
                         label="Price" 
                         type="text" 
@@ -140,9 +159,10 @@ export const CreateBook = () => {
             </div>
 
             <div className="buttonWrapper">
-                <div className="wrapperCloseWindow" onClick={handlerToMainPage}>
-                    <ArrowBackIcon />
-                    <h4>Close</h4>
+                <div className="wrapperCloseWindow">
+                    <Button variant="text" color="secondary" onClick={handlerToMainPage}>
+                        Close
+                    </Button>
                 </div>
                 <Button variant="outlined" color="secondary"  
                     onClick={handlerCreateBook}
@@ -151,7 +171,6 @@ export const CreateBook = () => {
                     Create
                 </Button>
             </div>
-
         </form>
     )
 } 

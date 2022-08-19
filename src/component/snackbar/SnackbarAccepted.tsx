@@ -5,10 +5,9 @@ import { useStyles } from './style';
 
 type Props = {
   alertMessage: string,
-  onClose: boolean,
 }
 
-export const SnackbarAccepted: FC<Props> = ({ alertMessage, onClose }) => {
+export const SnackbarAccepted: FC<Props> = ({ alertMessage }) => {
   const classes = useStyles()
 
   return (
@@ -17,5 +16,5 @@ export const SnackbarAccepted: FC<Props> = ({ alertMessage, onClose }) => {
           {alertMessage}
         </MuiAlert>
     </div>
-  );
+  )
 }

@@ -6,15 +6,16 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { useStyles } from './style';
 
 type Props = {
-  children: ReactElement,
-  itemText: string
+  children?: ReactElement,
+  itemText: string,
+  onClick?: () => void,
 }
 
-export const NestedListItem: FC<Props> = ({ children, itemText }) => {
+export const NestedListItem: FC<Props> = ({ children, itemText, onClick }) => {
   const classes = useStyles()
-  
+
   return (
-    <ListItem className={classes.nested}>
+    <ListItem className={classes.nested} onClick={onClick}>
       <ListItemIcon>
         {children}
       </ListItemIcon>

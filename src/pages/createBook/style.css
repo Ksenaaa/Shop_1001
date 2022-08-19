@@ -1,6 +1,5 @@
 .wrapper {
     width: 650px;
-    height: 100%;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
     border: 2px solid rgb(209, 205, 205);
@@ -78,4 +77,19 @@
     letter-spacing: 0.03333em;
     position: absolute;
     top: 640px;
+}
+
+.closeSnackbar {
+    height: 100%;
+    padding: 100%;
+    position: fixed;
+    z-index: 11;
+    left: 0;
+    top: 0;
+}
+
+.wrapperSnackBar {
+    position: absolute;
+    top: 50%;
+    z-index: 20;
 }
