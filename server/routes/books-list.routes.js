@@ -1,5 +1,8 @@
 const { Router } = require('express') 
 const Book = require('../models/Book')
+const searchBooksByNameAndAuthor = require('../utils/search')
+const { filterBookByCheckbox, filterBookByRange } = require('../utils/filter')
+const sortByField = require('../utils/sort')
 const router = Router() 
 
 router.get(
@@ -13,82 +16,35 @@ router.get(
             let filteredBooks = [];
             
             if (!!searchText) {
-                filteredBooks = books.filter(book => {
-                    return book.bookName.toLowerCase().includes(searchText.toLowerCase().trim()) 
-                    || book.author.toLowerCase().includes(searchText.toLowerCase().trim())
-                })
+                filteredBooks = searchBooksByNameAndAuthor(books, searchText)
                 books = filteredBooks?.length ? filteredBooks : []
             }
-            
+
             if (!!filter) {
                 const parseFilter = filter.split(';').map(option => option.split('='))
                 parseFilter.map(option => {
                     const optionItemInput = option[1].split(',').reduce((acc, i) => ({ ...acc, [i.split(':')[0]]: i.split(':')[1] }), {}) 
                     if (Object.keys(optionItemInput).includes('from') || Object.keys(optionItemInput).includes('to')) {
-                        const from = +optionItemInput.from
-                        const to = +optionItemInput.to
                         if (!!filteredBooks.length) {
-                            filteredBooks = filteredBooks.filter(bookFiltered => {
-                                const valueBook = +bookFiltered[option[0]]
-                                if (Object.keys(optionItemInput).length === 2) {
-                                    return valueBook >= from && valueBook <= to
-                                } else if (!!optionItemInput.from){
-                                    return valueBook >= from
-                                } else if (!!optionItemInput.to){
-                                    return valueBook <= to
-                                }
-                            })
+                            let fullFilter = []
+                            filterBookByRange(filteredBooks, option, optionItemInput, fullFilter)
+                            filteredBooks = fullFilter
                         } else {
-                            return books.map(book => {
-                                const valueBook = +book[option[0]]
-                                if (Object.keys(optionItemInput).length === 2) {
-                                    return valueBook >= from && valueBook <= to && filteredBooks.push(book)
-                                } else if (!!optionItemInput.from){
-                                    return valueBook >= from && filteredBooks.push(book)
-                                } else if (!!optionItemInput.to){
-                                    return valueBook <= to && filteredBooks.push(book)
-                                }
-                            })
+                            filterBookByRange(books, option, optionItemInput, filteredBooks)
                         }
                     } else if (!!filteredBooks.length) {
                         let fullFilter = []
-                        filteredBooks.map(book => {
-                            return option[1].split(',').map(item =>
-                                item === book[option[0]].toLowerCase() && fullFilter.push(book)
-                            )
-                        })
+                        filterBookByCheckbox(filteredBooks, option, fullFilter)
                         filteredBooks = fullFilter
                     } else {
-                        return books.map(book => {
-                            return option[1].split(',').map(item => 
-                                item === book[option[0]].toLowerCase() && filteredBooks.push(book)
-                            )
-                        })
+                        filterBookByCheckbox(books, option, filteredBooks)
                     }
                 })
                 
                 books = filteredBooks?.length ? filteredBooks : []
             }
 
-            const sortFieldDB = sortField === 'year' ? 'year'
-                : sortField === 'price' ? 'price'
-                    : sortField === 'name' ? 'bookName'
-                        : ''
-
-            let sortBooks = books.sort((bookA, bookB) => {
-                if (sortFieldDB === 'bookName') {
-                    if (sortOrder === 'asc') {
-                        if (bookA[sortFieldDB] > bookB[sortFieldDB]) return 1 
-                        return -1
-                    }
-                    if (bookA[sortFieldDB] < bookB[sortFieldDB]) return 1 
-                    return -1
-                }
-                if (sortOrder === 'asc') {
-                    return bookA[sortFieldDB] - bookB[sortFieldDB] 
-                }
-                return bookB[sortFieldDB] - bookA[sortFieldDB]
-            })
+            const sortBooks = sortByField(books, sortField, sortOrder)
 
             const newBooks = !sortField ? books : sortBooks
 

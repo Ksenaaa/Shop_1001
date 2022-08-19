@@ -1,5 +1,6 @@
 import React, { FC, useContext } from 'react'
 import DeleteSweepIcon from '@material-ui/icons/DeleteSweep';
+
 import { FilterSortContext } from '../../../context/FilterSortContext';
 
 import '../style.css'
