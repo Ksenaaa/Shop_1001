@@ -1,4 +1,4 @@
-const filterBookByCheckbox = (allBooks, option, addHereBook) => {
+const filterBooksByCheckbox = (allBooks, option, addHereBook) => {
     return allBooks.forEach(book => {
         return option[1].split(',').forEach(item =>
             item === book[option[0]].toLowerCase() && addHereBook.push(book)
@@ -6,7 +6,7 @@ const filterBookByCheckbox = (allBooks, option, addHereBook) => {
     })
 }
 
-const filterBookByRange = (allBooks, option, itemInput, addHereBook) => {
+const filterBooksByRange = (allBooks, option, itemInput, addHereBook) => {
     const from = +itemInput.from
     const to = +itemInput.to
 
@@ -22,4 +22,4 @@ const filterBookByRange = (allBooks, option, itemInput, addHereBook) => {
     })
 }
 
-module.exports = { filterBookByCheckbox, filterBookByRange }
+module.exports = { filterBooksByCheckbox, filterBooksByRange }

@@ -1,7 +1,7 @@
 const { Router } = require('express') 
 const Book = require('../models/Book')
 const searchBooksByNameAndAuthor = require('../utils/search')
-const { filterBookByCheckbox, filterBookByRange } = require('../utils/filter')
+const { filterBooksByCheckbox, filterBooksByRange } = require('../utils/filter')
 const sortByField = require('../utils/sort')
 const router = Router() 
 
@@ -27,17 +27,17 @@ router.get(
                     if (Object.keys(optionItemInput).includes('from') || Object.keys(optionItemInput).includes('to')) {
                         if (!!filteredBooks.length) {
                             let fullFilter = []
-                            filterBookByRange(filteredBooks, option, optionItemInput, fullFilter)
+                            filterBooksByRange(filteredBooks, option, optionItemInput, fullFilter)
                             filteredBooks = fullFilter
                         } else {
-                            filterBookByRange(books, option, optionItemInput, filteredBooks)
+                            filterBooksByRange(books, option, optionItemInput, filteredBooks)
                         }
                     } else if (!!filteredBooks.length) {
                         let fullFilter = []
-                        filterBookByCheckbox(filteredBooks, option, fullFilter)
+                        filterBooksByCheckbox(filteredBooks, option, fullFilter)
                         filteredBooks = fullFilter
                     } else {
-                        filterBookByCheckbox(books, option, filteredBooks)
+                        filterBooksByCheckbox(books, option, filteredBooks)
                     }
                 })
                 
