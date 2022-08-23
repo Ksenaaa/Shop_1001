@@ -16,7 +16,7 @@ router.post(
             .custom(async(value) => {
                 const findName = await User.findOne({name: value})
                 if (findName) { 
-                    throw new Error('This name are exists!') 
+                    throw new Error('This name exists!') 
                 }
                 return true;
             }),
@@ -25,7 +25,7 @@ router.post(
             .custom(async(value) => {
                 const findEmail = await User.findOne({email: value}) 
                 if (findEmail) { 
-                    throw new Error('This email are exists!') 
+                    throw new Error('This email exists!') 
                 }
                 return true;
             }),
@@ -60,7 +60,7 @@ router.post(
             
             await user.save()
 
-            res.status(201).json({message: "User are created"})  
+            res.status(201).json({message: "User created"})  
         } catch (e) {
             res.status(500).json({message: "its Error, try again!"})  
         }

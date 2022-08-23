@@ -1,6 +1,4 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
-import { Button } from '@material-ui/core'
 
 import { LoadingCircular } from '../../component/loading/LoadingCircular'
 import { BasketContext } from '../../context/BasketContext'
@@ -9,6 +7,7 @@ import { IBook, IBookResponce } from '../../interface/IBook'
 import { normalizeBooks } from '../../utils/normalizeBooks'
 import { BasketList } from './components/BasketList'
 import { formatQueryString } from '../../utils/formatQueryString'
+import { GoBackPage } from '../../component/goBackPage/GoBackPage'
 
 import './style.css'
 
@@ -21,8 +20,6 @@ export const Basket = () => {
     
     const idsForRequest = booksLocalStore.map(book => book.idBook)
     
-    const navigate = useNavigate()
-
     useEffect(() => {
         idsForRequest.length && showBooks()
     }, [])
@@ -31,10 +28,6 @@ export const Basket = () => {
         setBooks(prevBooks => prevBooks.filter(book => 
             booksLocalStore.find(localBook => book.idBook === localBook.idBook && localBook.quantity )))
     }, [booksLocalStore])
-    
-    const goBackPage = useCallback(() => 
-        navigate(-1)
-    , [])
 
     const showBooks = useCallback(async() => {
         const result = await request({ url: formatQueryString(`basket/books`, { id: idsForRequest }) })
@@ -44,11 +37,7 @@ export const Basket = () => {
 
     return (
         <>
-            <div className="wrapperClosePage">
-                <Button variant="text" color="secondary" onClick={goBackPage}>
-                    Go back
-                </Button>
-            </div>
+            <GoBackPage />
             <div className="wrapperBasket">
                 {loading && <LoadingCircular />}
                 {books.length 

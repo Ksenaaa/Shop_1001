@@ -7,6 +7,9 @@ import { useHttp } from '../../hooks/http.hook'
 import { IBook } from '../../interface/IBook'
 import { normalizeBook } from '../../utils/normalizeBooks'
 import { BasketContext } from '../../context/BasketContext'
+import { RouteNames } from '../../interface/IRoute'
+import { AuthContext } from '../../context/AuthContext'
+import { GoBackPage } from '../../component/goBackPage/GoBackPage'
 
 import './style.css'
 
@@ -14,21 +17,18 @@ export const BookPage = () => {
     const [book, setBook] = useState<IBook>()
 
     const { addBookToBasket } = useContext(BasketContext)
+    const { userAuth } = useContext(AuthContext)
 
     const { loading, request } = useHttp()
 
     const { idBook } = useParams()
 
-    const navigate = useNavigate()
+    const toEditePage = useNavigate()
 
     const showBook = useCallback(async () => {
         const result = await request({ url: `books/${idBook}` })
         setBook(normalizeBook(result)) 
     }, [idBook, request])
-
-    const goBackPage = useCallback(() => 
-        navigate(-1)
-    , [])
 
     useEffect(() => {
         showBook()
@@ -38,19 +38,29 @@ export const BookPage = () => {
         idBook && addBookToBasket(idBook)
     , [idBook, addBookToBasket])
 
+    const navigateToEditePage = useCallback(() => 
+        toEditePage(`${RouteNames.EDITE_BOOK}/${idBook}`)
+    , [idBook])
+
     return (
         <>
-            <div className="wrapperClosePage">
-                <Button variant="text" color="secondary" onClick={goBackPage}>
-                    Go back
-                </Button>
-            </div>
+            <GoBackPage />
             <h2 className="title-name">Book: {book?.bookName}</h2>
             {loading && <LoadingCircular />}
             {!!book &&
             <div className="wrapper-book-page">
-                <div className="wrapper-image">
-                    <img src={`${process.env.REACT_APP_API_URL}${book?.img}`} alt="book" />
+                <div className="imageAndChange">
+                    <div className="wrapper-image">
+                        <img src={`${process.env.REACT_APP_API_URL}${book?.img}`} alt="book" />
+                    </div>
+                    {(userAuth.userId === book.sellerId) &&
+                        <Button variant="outlined" color="secondary"                    
+                            onClick={navigateToEditePage}
+                            disabled={loading}
+                        >
+                            Edite book
+                        </Button>
+                    }
                 </div>
                 <div className="wrapper-text">
                     <div className="name title">{book?.bookName}</div>
