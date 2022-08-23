@@ -4,8 +4,8 @@ import { useHttp } from '../../hooks/http.hook'
 import { AuthContext } from '../../context/AuthContext';
 import { IBook } from '../../interface/IBook';
 import { useToggle } from '../../hooks/toggle.hook';
-import { FieldsForBook } from '../../component/fieldsForBook/FieldsForBook';
-import { addFieldForBook } from '../../utils/addFieldForBook';
+import { BookForm } from '../../component/bookForm/BookForm';
+import { addFieldToBook } from '../../utils/addFieldToBook';
 
 export const CreateBook = () => {
     const [form, setForm] = useState<Record<string, keyof Omit<IBook, 'idBook'>>>({})
@@ -17,15 +17,15 @@ export const CreateBook = () => {
     
     const { loading, request, errorsValid } = useHttp()
     
-    const setFormBook = useCallback((target: ChangeEvent<HTMLInputElement>) => {
-        setForm(prevForm => addFieldForBook(prevForm, target))
-    }, [])
+    const setFormBook = useCallback((target: ChangeEvent<HTMLInputElement>) => 
+        setForm(prevForm => addFieldToBook(prevForm, target))
+    , [])
 
     const handlerCreateBook = useCallback(async() => {
         const formData = new FormData()
         const newForm = { ...form, sellerId: userAuth.userId } as Record<string, keyof Omit<IBook, 'idBook'>>
 
-        Object.keys(newForm).forEach((formKey) => { formData.append(formKey, newForm[formKey]) })
+        Object.keys(newForm).forEach((formKey) => formData.append(formKey, newForm[formKey]))
 
         const data = await request({ url: 'create/create-book', method: 'POST', body: formData, notJsonContent: true })
 
@@ -36,12 +36,12 @@ export const CreateBook = () => {
         }
     }, [form])
     
-    const onCloseSnackbar = useCallback(() => {
+    const onCloseSnackbar = useCallback(() => 
         toggleShowSnackbar()
-    }, [toggleShowSnackbar])
+    , [toggleShowSnackbar])
 
     return (
-        <FieldsForBook 
+        <BookForm 
             namePage='New Book'
             form={form}
             setFormBook={setFormBook}

@@ -3,7 +3,7 @@ import { ChangeEvent } from "react"
 import { IBook } from "../interface/IBook"
 import { parceStringToNumberAndPoint } from "./parceStringToNumberAndPoint"
 
-export const addFieldForBook = (
+export const addFieldToBook = (
     prevForm: Record<string, keyof Omit<IBook, 'idBook'>>, 
     { target }: ChangeEvent<HTMLInputElement>
 ) => {

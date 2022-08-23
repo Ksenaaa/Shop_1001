@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 
-import { FieldsForBook } from '../../component/fieldsForBook/FieldsForBook'
+import { BookForm } from '../../component/bookForm/BookForm'
 import { AuthContext } from '../../context/AuthContext'
 import { useHttp } from '../../hooks/http.hook'
 import { useToggle } from '../../hooks/toggle.hook'
 import { IBook } from '../../interface/IBook'
 import { RouteNames } from '../../interface/IRoute'
-import { addFieldForBook } from '../../utils/addFieldForBook'
+import { addFieldToBook } from '../../utils/addFieldToBook'
 import { normalizeBook } from '../../utils/normalizeBooks'
 
 export const EditeBook = () => {
@@ -35,9 +35,7 @@ export const EditeBook = () => {
         } else {
             setMessageCreated("It doesn't your book!") 
             toggleShowSnackbar()
-            setTimeout(() => {
-                toMainPage()
-            }, 2000)
+            setTimeout(() => toMainPage(), 2000)
         }    
     }, [idBook, request])    
     
@@ -45,24 +43,22 @@ export const EditeBook = () => {
         showBook()
     }, [showBook])    
     
-    const setFormBook = useCallback((target: ChangeEvent<HTMLInputElement>) => {
-        setForm(prevForm => addFieldForBook(prevForm, target))
-    }, [])    
+    const setFormBook = useCallback((target: ChangeEvent<HTMLInputElement>) => 
+        setForm(prevForm => addFieldToBook(prevForm, target))
+    , [])    
     
     const handlerCreateBook = useCallback(async() => {
         const formData = new FormData()
         const newForm = { ...form } 
         
-        Object.keys(newForm).forEach((formKey) => { formData.append(formKey, newForm[formKey]) })
+        Object.keys(newForm).forEach((formKey) => formData.append(formKey, newForm[formKey]))
         
         const data = await request({ url: `edite/edite-book/${idBook}`, method: 'PUT', body: formData, notJsonContent: true })
         
         if (data.status === 200) {
             setMessageCreated(data.message)
             toggleShowSnackbar()
-            setTimeout(() => {
-                navigate(`${RouteNames.BOOK_PAGE}/${idBook}`) 
-            }, 2000)
+            setTimeout(() => navigate(`${RouteNames.BOOK_PAGE}/${idBook}`), 2000)
         }    
     }, [form])    
     
@@ -70,12 +66,12 @@ export const EditeBook = () => {
         navigate(RouteNames.MAIN)
     , [])
 
-    const onCloseSnackbar = useCallback(() => {
+    const onCloseSnackbar = useCallback(() => 
         toggleShowSnackbar()
-    }, [toggleShowSnackbar])
+    , [toggleShowSnackbar])
     
     return (
-        <FieldsForBook
+        <BookForm
             namePage='Edite Book'
             form={form}
             setFormBook={setFormBook}

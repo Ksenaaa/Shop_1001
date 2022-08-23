@@ -8,7 +8,7 @@ import { InputUploadImg } from './components/InputUploadImg';
 import { IBook } from '../../interface/IBook';
 import { ErrorType } from '../../utils/ErrorsHanding';
 import { selectOptionCategory, selectOptionLanguage, selectOptionYear } from './constants'
-import { LoadingCircular } from '../../component/loading/LoadingCircular';
+import { LoadingCircular } from '../loading/LoadingCircular';
 import { SnackbarAccepted } from '../snackbar/SnackbarAccepted';
 import { GoBackPage } from '../goBackPage/GoBackPage';
 
@@ -25,13 +25,12 @@ type Props = {
     onCloseSnackbar: () => void,
     handlerCreateBook: () => Promise<void>,
     buttonCreateName: string,
-    isEdit?: boolean,
 }
   
-export const FieldsForBook: FC<Props> = ({ namePage, form, isEdit, setFormBook, loading, errorsValid, messageCreated, isShowSnackbar, onCloseSnackbar, handlerCreateBook, buttonCreateName }) => {  
-    const handlerChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>): void => {
+export const BookForm: FC<Props> = ({ namePage, form, setFormBook, loading, errorsValid, messageCreated, isShowSnackbar, onCloseSnackbar, handlerCreateBook, buttonCreateName }) => {  
+    const handlerChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>): void => 
         setFormBook({ target } as ChangeEvent<HTMLInputElement>)
-    }, []) 
+    , []) 
 
     return (
         <>
