@@ -1,0 +1,91 @@
+import React, { ChangeEvent, useCallback, useContext, useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router'
+
+import { FieldsForBook } from '../../component/fieldsForBook/FieldsForBook'
+import { AuthContext } from '../../context/AuthContext'
+import { useHttp } from '../../hooks/http.hook'
+import { useToggle } from '../../hooks/toggle.hook'
+import { IBook } from '../../interface/IBook'
+import { RouteNames } from '../../interface/IRoute'
+import { addFieldForBook } from '../../utils/addFieldForBook'
+import { normalizeBook } from '../../utils/normalizeBooks'
+
+export const EditeBook = () => {
+    const [form, setForm] = useState<Record<string, keyof Omit<IBook, 'idBook'>>>({})
+    const [messageCreated, setMessageCreated] = useState<string>('')
+    
+    const navigate = useNavigate()
+    
+    const { isOpen: isShowSnackbar, onToggle: toggleShowSnackbar } = useToggle()
+    
+    const { userAuth } = useContext(AuthContext)
+    
+    const { loading, request, errorsValid } = useHttp()
+    
+    const { idBook } = useParams()
+    
+    const showBook = useCallback(async () => {
+        const result = await request({ url: `books/${idBook}` })
+        
+        if (userAuth.userId === result.sellerId) {
+            setForm(preForm => {
+                let newform = Object.fromEntries(Object.entries(normalizeBook(result)).filter(item => item[0] !== 'idBook'))
+                return { ...preForm, ...newform } as Record<string, keyof Omit<IBook, 'idBook'>>
+            })    
+        } else {
+            setMessageCreated("It doesn't your book!") 
+            toggleShowSnackbar()
+            setTimeout(() => {
+                toMainPage()
+            }, 2000)
+        }    
+    }, [idBook, request])    
+    
+    useEffect(() => {
+        showBook()
+    }, [showBook])    
+    
+    const setFormBook = useCallback((target: ChangeEvent<HTMLInputElement>) => {
+        setForm(prevForm => addFieldForBook(prevForm, target))
+    }, [])    
+    
+    const handlerCreateBook = useCallback(async() => {
+        const formData = new FormData()
+        const newForm = { ...form } 
+        
+        Object.keys(newForm).forEach((formKey) => { formData.append(formKey, newForm[formKey]) })
+        
+        const data = await request({ url: `edite/edite-book/${idBook}`, method: 'PUT', body: formData, notJsonContent: true })
+        
+        if (data.status === 200) {
+            setMessageCreated(data.message)
+            toggleShowSnackbar()
+            setTimeout(() => {
+                navigate(`${RouteNames.BOOK_PAGE}/${idBook}`) 
+            }, 2000)
+        }    
+    }, [form])    
+    
+    const toMainPage = useCallback(() => 
+        navigate(RouteNames.MAIN)
+    , [])
+
+    const onCloseSnackbar = useCallback(() => {
+        toggleShowSnackbar()
+    }, [toggleShowSnackbar])
+    
+    return (
+        <FieldsForBook
+            namePage='Edite Book'
+            form={form}
+            setFormBook={setFormBook}
+            loading={loading}
+            errorsValid={errorsValid}
+            messageCreated={messageCreated}
+            isShowSnackbar={isShowSnackbar}
+            onCloseSnackbar={onCloseSnackbar}
+            handlerCreateBook={handlerCreateBook}
+            buttonCreateName='Edite'
+        />
+    )
+} 

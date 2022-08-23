@@ -8,6 +8,7 @@ import { BookPage } from "../pages/bookPage/BookPage";
 import { Basket } from "../pages/basket/Basket";
 import { Order } from "../pages/order/Order";
 import { Messages } from "../pages/messages/Messages";
+import { EditeBook } from "../pages/editeBook/EditeBook";
 
 export interface IRoute {
     path: string;
@@ -24,6 +25,7 @@ export enum RouteNames {
     BASKET = '/basket',
     ORDER = '/order',
     MESSAGES = '/messages',
+    EDITE_BOOK = '/edite-book',
 }
 
 export const publicRoutes: IRoute[] = [
@@ -38,4 +40,5 @@ export const privateRoutes: IRoute[] = [
     { path: RouteNames.BASKET, exact: true, element: Basket },
     { path: RouteNames.ORDER, exact: true, element: Order },
     { path: RouteNames.MESSAGES, exact: true, element: Messages },
+    { path: `${RouteNames.EDITE_BOOK}/:idBook`, exact: true, element: EditeBook },
 ]

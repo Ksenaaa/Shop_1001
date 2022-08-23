@@ -10,7 +10,7 @@ type Props = {
     errors: ErrorType[] | null,
     type: string,
     name: string,
-    value?: File | null
+    value: File | null | string,
 }
 
 export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value }) => {
@@ -18,12 +18,21 @@ export const InputUploadImg: FC<Props> = ({ onChange, errors, type, name, value 
     const [img, setImg] = useState<Blob | MediaSource | null>(null)
 
     useEffect(() => {
+        if (!value) return
+
+        if (typeof value === 'string') {
+            setImageUrl(`${process.env.REACT_APP_LOCALHOST}${value}`)
+            return
+        }
+
         setImageUrl('')
         setImg(null)
+
         if (!img) return
+
         setImageUrl(URL.createObjectURL(img))
     }, [value])
-
+    
     const handlerChange = useCallback((e: ChangeEvent) => {
         const target = e.target as HTMLInputElement
         const file: File = (target.files as FileList)[0]
