@@ -35,9 +35,9 @@ export const EditeBook = () => {
         } else {
             setMessageCreated("It doesn't your book!") 
             toggleShowSnackbar()
-            setTimeout(() => toMainPage(), 2000)
+            setTimeout(() => navigate(RouteNames.MAIN), 2000)
         }    
-    }, [idBook, request])    
+    }, [idBook, request, toggleShowSnackbar, navigate, userAuth.userId])    
     
     useEffect(() => {
         showBook()
@@ -58,14 +58,10 @@ export const EditeBook = () => {
         if (data.status === 200) {
             setMessageCreated(data.message)
             toggleShowSnackbar()
-            setTimeout(() => navigate(`${RouteNames.BOOK_PAGE}/${idBook}`), 2000)
+            setTimeout(() => navigate(-2), 2000)
         }    
-    }, [form])    
+    }, [form, toggleShowSnackbar, request, idBook, navigate])    
     
-    const toMainPage = useCallback(() => 
-        navigate(RouteNames.MAIN)
-    , [])
-
     const onCloseSnackbar = useCallback(() => 
         toggleShowSnackbar()
     , [toggleShowSnackbar])

@@ -13,11 +13,11 @@ router.post(
         try {
             const errors = validationResult(req)
             let imgError
-            const { bookName, author, category, page, year, language, price, sellerId } = req.body
+            const { bookName, author, category, page, year, language, price, sellerId, img } = req.body
             const file = req?.files?.img
 
             validatorImg(file, errors, imgError, img)
-            
+
             if (!errors.isEmpty() || imgError) {
                 return res.status(400).json({ errors: errors.array() })
             }

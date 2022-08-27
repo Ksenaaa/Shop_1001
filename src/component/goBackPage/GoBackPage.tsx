@@ -9,7 +9,7 @@ export const GoBackPage = () => {
 
     const goToBack = useCallback(() => 
         navigate(-1)
-    , [])
+    , [navigate])
 
     return (
         <div className="wrapperClosePage">

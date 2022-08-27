@@ -34,7 +34,7 @@ export const CreateBook = () => {
             setMessageCreated(data.message)
             toggleShowSnackbar()
         }
-    }, [form])
+    }, [form, request, toggleShowSnackbar, userAuth.userId])
     
     const onCloseSnackbar = useCallback(() => 
         toggleShowSnackbar()

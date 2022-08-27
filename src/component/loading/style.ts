@@ -6,7 +6,7 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    zIndex: 10,
+    zIndex: 100,
     top: 0,
     left: 0,
     height: '100%',
