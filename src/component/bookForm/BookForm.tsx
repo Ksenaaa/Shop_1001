@@ -30,7 +30,7 @@ type Props = {
 export const BookForm: FC<Props> = ({ namePage, form, setFormBook, loading, errorsValid, messageCreated, isShowSnackbar, onCloseSnackbar, handlerCreateBook, buttonCreateName }) => {  
     const handlerChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>): void => 
         setFormBook({ target } as ChangeEvent<HTMLInputElement>)
-    , []) 
+    , [setFormBook]) 
 
     return (
         <>
@@ -38,10 +38,10 @@ export const BookForm: FC<Props> = ({ namePage, form, setFormBook, loading, erro
             <form className="wrapper">
                 {loading && <LoadingCircular/>}
                 {isShowSnackbar &&
-                    <div className="wrapperSnackBar">
+                    <>
                         <SnackbarAccepted alertMessage={messageCreated} />
                         <div onClick={onCloseSnackbar} className="closeSnackbar" />
-                    </div>
+                    </>
                 }
                 <div className="wrapperTitle">
                     <h2>{namePage}</h2>

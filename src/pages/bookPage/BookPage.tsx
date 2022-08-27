@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { Button } from '@material-ui/core'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 
 import { LoadingCircular } from '../../component/loading/LoadingCircular'
 import { useHttp } from '../../hooks/http.hook'
@@ -10,20 +11,28 @@ import { BasketContext } from '../../context/BasketContext'
 import { RouteNames } from '../../interface/IRoute'
 import { AuthContext } from '../../context/AuthContext'
 import { GoBackPage } from '../../component/goBackPage/GoBackPage'
+import { useToggle } from '../../hooks/toggle.hook'
+import { SnackbarAccepted } from '../../component/snackbar/SnackbarAccepted'
+import { ConfirmModal } from '../../component/confirmModal/ConfirmModal'
 
 import './style.css'
 
 export const BookPage = () => {
     const [book, setBook] = useState<IBook>()
+    const [confirmDeleteBook, setConfirmDeleteBook] = useState<boolean>(false)
+    const [messageDeleted, setMessageDeleted] = useState<string>('')
 
     const { addBookToBasket } = useContext(BasketContext)
     const { userAuth } = useContext(AuthContext)
-
+    
+    const { isOpen: isShowSnackbar, onToggle: toggleShowSnackbar } = useToggle()
+    const { isOpen: isShowConfirmModal, onToggle: toggleShowConfirmModal } = useToggle()
+    
     const { loading, request } = useHttp()
-
+    
     const { idBook } = useParams()
-
-    const toEditePage = useNavigate()
+    
+    const navigate = useNavigate()
 
     const showBook = useCallback(async () => {
         const result = await request({ url: `books/${idBook}` })
@@ -39,14 +48,43 @@ export const BookPage = () => {
     , [idBook, addBookToBasket])
 
     const navigateToEditePage = useCallback(() => 
-        toEditePage(`${RouteNames.EDITE_BOOK}/${idBook}`)
-    , [idBook])
+        navigate(`${RouteNames.EDITE_BOOK}/${idBook}`)
+    , [idBook, navigate])
+
+    const openModalConfirm = useCallback(() => 
+        toggleShowConfirmModal()
+    , [toggleShowConfirmModal])
+        
+    const onConfirm = useCallback((answer: boolean) => {
+        setConfirmDeleteBook(answer)
+        toggleShowConfirmModal()
+    }, [toggleShowConfirmModal])
+    
+    const deleteBook = useCallback(async() => {
+        const data = await request({ url: `delete/delete-book/${idBook}`, method: 'DELETE', body: confirmDeleteBook })
+        if (data.status === 200) {
+            setMessageDeleted(data.message)
+            toggleShowSnackbar()
+            setTimeout(() => navigate(-1), 1000)
+        }    
+    }, [request, idBook, toggleShowSnackbar, navigate])
+    
+    useEffect(() => {
+        confirmDeleteBook && deleteBook() 
+    }, [confirmDeleteBook, deleteBook])
 
     return (
         <>
+            {loading && <LoadingCircular />}
+            {isShowSnackbar && <SnackbarAccepted alertMessage={messageDeleted} />}
+            {isShowConfirmModal && 
+                <ConfirmModal 
+                    askConfirm='Are you sure to delete?'
+                    onConfirm={onConfirm}
+                />
+            }
             <GoBackPage />
             <h2 className="title-name">Book: {book?.bookName}</h2>
-            {loading && <LoadingCircular />}
             {!!book &&
             <div className="wrapper-book-page">
                 <div className="imageAndChange">
@@ -54,12 +92,21 @@ export const BookPage = () => {
                         <img src={`${process.env.REACT_APP_API_URL}${book?.img}`} alt="book" />
                     </div>
                     {(userAuth.userId === book.sellerId) &&
-                        <Button variant="outlined" color="secondary"                    
-                            onClick={navigateToEditePage}
-                            disabled={loading}
-                        >
-                            Edite book
-                        </Button>
+                        <>
+                            <Button variant="outlined" color="secondary"                    
+                                onClick={navigateToEditePage}
+                                disabled={loading}
+                            >
+                                Edite book
+                            </Button>
+                            <Button variant="outlined" color="secondary"                   
+                                onClick={openModalConfirm}
+                                disabled={loading}
+                            >
+                                Delete book
+                                <DeleteForeverIcon />
+                            </Button>
+                        </>
                     }
                 </div>
                 <div className="wrapper-text">

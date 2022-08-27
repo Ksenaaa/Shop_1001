@@ -14,6 +14,7 @@ app.use(fileUpload({}))
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/create', require('./routes/create-book.routes'))
 app.use('/api/edite', require('./routes/edite-book.routes'))
+app.use('/api/delete', require('./routes/delete-book.routes'))
 app.use('/api/books', require('./routes/books-list.routes'))
 app.use('/api/basket', require('./routes/basket.routes'))
 

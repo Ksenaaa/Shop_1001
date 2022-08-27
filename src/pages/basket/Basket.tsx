@@ -20,20 +20,20 @@ export const Basket = () => {
     
     const idsForRequest = booksLocalStore.map(book => book.idBook)
     
+    const showBooks = useCallback(async() => {
+        const result = await request({ url: formatQueryString(`basket/books`, { id: idsForRequest }) })
+        const resultData = result.map((book: IBookResponce[]) => book[0])
+        setBooks([...normalizeBooks(resultData)])
+    }, [request])
+
     useEffect(() => {
         idsForRequest.length && showBooks()
-    }, [])
+    }, [showBooks])
 
     useEffect(() => {
         setBooks(prevBooks => prevBooks.filter(book => 
             booksLocalStore.find(localBook => book.idBook === localBook.idBook && localBook.quantity )))
     }, [booksLocalStore])
-
-    const showBooks = useCallback(async() => {
-        const result = await request({ url: formatQueryString(`basket/books`, { id: idsForRequest }) })
-        const resultData = result.map((book: IBookResponce[]) => book[0])
-        setBooks([...normalizeBooks(resultData)])
-    }, [request, idsForRequest])
 
     return (
         <>

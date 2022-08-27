@@ -87,9 +87,3 @@
     left: 0;
     top: 0;
 }
-
-.wrapperSnackBar {
-    position: absolute;
-    top: 50%;
-    z-index: 20;
-}
