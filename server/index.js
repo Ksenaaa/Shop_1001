@@ -18,7 +18,7 @@ app.use('/api/delete', require('./routes/delete-book.routes'))
 app.use('/api/books', require('./routes/books-list.routes'))
 app.use('/api/basket', require('./routes/basket.routes'))
 
-const PORT = config.get('port')
+const PORT = process.env.PORT || config.get('port')
 
 const start = async () => {
     try {
