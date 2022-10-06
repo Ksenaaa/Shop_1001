@@ -7,7 +7,13 @@ const fileUpload = require('express-fileupload')
 
 const app = express()
 
-app.use(cors())
+const corsOptions = {
+   origin:'*', 
+   credentials:true,
+   optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions))
 app.use(express.json({extended: true}))
 app.use(express.static(path.join(__dirname, '/static')))
 app.use(fileUpload({}))
